@@ -16,10 +16,6 @@
  * credit is given to the original author(s).
  */
 
-import {config} from "dotenv";
-
-config();
-
 export default class Config {
 
     public static get(value: string): any {
