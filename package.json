@@ -1,23 +1,23 @@
 {
-  "name": "cypher-network",
-  "author": "Ben Petrillo",
-  "version": "0.1.0",
-  "main": "src/CypherNetwork.ts",
-  "description": "Keep tabs on your VALORANT data with ease.",
-  "scripts": {
-    "lint": "prettier . -w",
-    "build": "bun build src/CypherNetwork.ts --outfile=dist/index.js --minify --target=bun",
-    "start": "bun run src/CypherNetwork.ts",
-    "start:dev": "bun --watch run src/CypherNetwork.ts"
-  },
-  "dependencies": {
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "discord.js": "^13.17.1"
-  },
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "bun-types": "^1.1.18",
-    "discord-api-types": "^0.23.1",
-    "prettier": "^3.3.2"
-  }
+    "name": "cypher-network",
+    "author": "Ben Petrillo",
+    "version": "0.1.0",
+    "main": "src/CypherNetwork.ts",
+    "description": "Keep tabs on your VALORANT data with ease.",
+    "scripts": {
+        "lint": "prettier . -w",
+        "build": "bun build src/CypherNetwork.ts --outfile=dist/index.js --minify --target=bun",
+        "start": "bun run src/CypherNetwork.ts",
+        "start:dev": "bun --watch run src/CypherNetwork.ts"
+    },
+    "dependencies": {
+        "@discordjs/rest": "^0.1.0-canary.0",
+        "discord.js": "^13.17.1"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "bun-types": "^1.1.18",
+        "discord-api-types": "^0.23.1",
+        "prettier": "^3.3.2"
+    }
 }

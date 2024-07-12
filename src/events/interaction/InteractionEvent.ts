@@ -15,15 +15,25 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import {
+    ButtonInteraction,
+    Client,
+    ClientEvents,
+    CommandInteraction,
+    GuildMember,
+    Interaction,
+    MessageEmbed
+} from "discord.js";
 
-import {ButtonInteraction, Client, ClientEvents, CommandInteraction, GuildMember, Interaction, MessageEmbed} from "discord.js";
-import {IEvent} from "../../interfaces/IEvent";
-import {ApplicationCommand} from "../../types/ApplicationCommand";
-import CommandManager from "../../managers/CommandManager";
-import EmbedUtil from "../../utils/EmbedUtil";
+import { IEvent } from "@interfaces/IEvent";
+
+import CommandManager from "@managers/CommandManager";
+
+import EmbedUtil from "@utils/EmbedUtil";
+
+import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 export default class InteractionEvent implements IEvent {
-
     public name: keyof ClientEvents;
     public once: boolean;
     public readonly client: Client;
@@ -34,21 +44,27 @@ export default class InteractionEvent implements IEvent {
         this.client = client;
     }
 
-    public async execute(interaction: Interaction|any): Promise<void> {
+    public async execute(interaction: Interaction | any): Promise<void> {
         if (interaction.inGuild()) {
             if (interaction.isCommand()) {
                 if (interaction.member instanceof GuildMember) {
                     const name: string = interaction.commandName;
-                    const command: ApplicationCommand = CommandManager.commands.get(name);
+                    const command: ApplicationCommand =
+                        CommandManager.commands.get(name);
                     if (command != null && interaction.isCommand()) {
                         command.execute(interaction);
                     }
                 }
             }
         } else {
-            const embed: MessageEmbed = EmbedUtil.getDefaultEmbed("Please run this command in a guild.");
-            if (interaction instanceof CommandInteraction || interaction instanceof ButtonInteraction) {
-                return void await interaction.reply({embeds: [embed]});
+            const embed: MessageEmbed = EmbedUtil.getDefaultEmbed(
+                "Please run this command in a guild."
+            );
+            if (
+                interaction instanceof CommandInteraction ||
+                interaction instanceof ButtonInteraction
+            ) {
+                return void (await interaction.reply({ embeds: [embed] }));
             } else return;
         }
     }

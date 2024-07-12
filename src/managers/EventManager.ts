@@ -15,13 +15,12 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { Client } from "discord.js";
 
-import {Client} from "discord.js";
-import ReadyEvent from "../events/client/ReadyEvent";
-import InteractionEvent from "../events/interaction/InteractionEvent";
+import ReadyEvent from "@events/client/ReadyEvent";
+import InteractionEvent from "@events/interaction/InteractionEvent";
 
 export default class EventManager {
-
     private readonly client: Client;
 
     constructor(client: Client) {
@@ -34,9 +33,13 @@ export default class EventManager {
             .on("ready", async () => {
                 await new ReadyEvent(this.client, "ready", true).execute();
             })
-            .on("interactionCreate", async interaction => {
+            .on("interactionCreate", async (interaction) => {
                 if (interaction.isCommand()) {
-                    await new InteractionEvent(this.client, "interactionCreate", false).execute(interaction);
+                    await new InteractionEvent(
+                        this.client,
+                        "interactionCreate",
+                        false
+                    ).execute(interaction);
                 }
             });
     }

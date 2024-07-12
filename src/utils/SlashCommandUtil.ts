@@ -15,16 +15,15 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { Client } from "discord.js";
 
-import {Client} from "discord.js";
-import AccountCommand from "../commands/AccountCommand";
-import CompetitiveCommand from "../commands/CompetitiveCommand";
-import MatchCommand from "../commands/MatchCommand";
-import MostRecentCommand from "../commands/MostRecentCommand";
-import HistoryCommand from "../commands/HistoryCommand";
+import AccountCommand from "@commands/AccountCommand";
+import CompetitiveCommand from "@commands/CompetitiveCommand";
+import HistoryCommand from "@commands/HistoryCommand";
+import MatchCommand from "@commands/MatchCommand";
+import MostRecentCommand from "@commands/MostRecentCommand";
 
 export default class SlashCommandUtil {
-
     public static getAllSlashCommandData(client: Client): object[] {
         return [
             new AccountCommand(client).getCommandData(),

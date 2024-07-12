@@ -15,13 +15,13 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { Client } from "discord.js";
 
-import {Client} from "discord.js";
-import Logger from "../structs/Logger";
-import CypherNetworkConstants from "../constants/CypherNetworkConstants";
+import CypherNetworkConstants from "@constants/CypherNetworkConstants";
+
+import Logger from "@structs/Logger";
 
 export default class ApplicationManager {
-
     private readonly client: Client;
 
     constructor(client: Client) {

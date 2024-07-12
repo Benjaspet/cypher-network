@@ -15,15 +15,16 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-
-import {BitFieldResolvable, Intents, MessageMentionTypes, PartialTypes} from "discord.js";
+import {
+    BitFieldResolvable,
+    Intents,
+    MessageMentionTypes,
+    PartialTypes
+} from "discord.js";
 
 export default class IntentUtil {
-
     public static getIntents(): BitFieldResolvable<any, number> {
-        return [
-
-        ];
+        return [];
     }
 
     public static getPartials(): PartialTypes[] {
@@ -31,6 +32,6 @@ export default class IntentUtil {
     }
 
     public static getParsedMentions(): MessageMentionTypes[] {
-        return ["users", "roles", "everyone"]
+        return ["users", "roles", "everyone"];
     }
 }

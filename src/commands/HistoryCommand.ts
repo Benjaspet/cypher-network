@@ -15,19 +15,28 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-
 import {
-    ApplicationCommandData, Client, CommandInteraction,
-    EmbedFieldData, MessageEmbed} from "discord.js";
-import {ApplicationCommand} from "../types/ApplicationCommand";
-import {ApplicationCommandOptionTypes} from "discord.js/typings/enums";
-import Command from "../structs/Command";
-import CypherNetworkConstants from "../constants/CypherNetworkConstants";
-import EmbedUtil from "../utils/EmbedUtil";
+    ApplicationCommandData,
+    Client,
+    CommandInteraction,
+    EmbedFieldData,
+    MessageEmbed
+} from "discord.js";
+import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
+
+import CypherNetworkConstants from "@constants/CypherNetworkConstants";
+
+import Command from "@structs/Command";
+
+import EmbedUtil from "@utils/EmbedUtil";
+
+import { ApplicationCommand } from "@defs/ApplicationCommand";
 import fetch from "node-fetch";
 
-export default class HistoryCommand extends Command implements ApplicationCommand {
-
+export default class HistoryCommand
+    extends Command
+    implements ApplicationCommand
+{
     private readonly client: Client;
 
     constructor(client: Client) {
@@ -85,22 +94,30 @@ export default class HistoryCommand extends Command implements ApplicationComman
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        const name: string = encodeURIComponent(interaction.options.getString("name"));
-        const tag: string = encodeURIComponent(interaction.options.getString("tag"));
+        const name: string = encodeURIComponent(
+            interaction.options.getString("name")
+        );
+        const tag: string = encodeURIComponent(
+            interaction.options.getString("tag")
+        );
         const region: string = interaction.options.getString("region");
         await interaction.deferReply();
         try {
-            await fetch(`https://api.henrikdev.xyz/valorant/v3/matches/${region}/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`)
+            await fetch(
+                `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
+            )
                 .then((response) => response.json())
-                .then(async res => {
-                    const {data} = res;
+                .then(async (res) => {
+                    const { data } = res;
                     const matches: any[] = data;
                     let i = matches.length > 10 ? 10 : matches.length;
                     let fieldData: EmbedFieldData[] = [];
                     let embed: MessageEmbed = new MessageEmbed();
                     for (let j = 0; j < i; j++) {
                         const currentMatch = matches[j];
-                        const p: any = currentMatch.players.all_players.find((player: any) => player.name === name);
+                        const p: any = currentMatch.players.all_players.find(
+                            (player: any) => player.name === name
+                        );
                         const score: number = p.stats.score;
                         const kills: number = p.stats.kills;
                         const deaths: number = p.stats.deaths;
@@ -111,23 +128,37 @@ export default class HistoryCommand extends Command implements ApplicationComman
                         embed.setThumbnail(p.assets.card.small);
                         fieldData.push({
                             name: `${currentMatch.metadata.map} [${currentMatch.metadata.mode}]`,
-                            value: `• K/D/A: **${kills} / ${deaths} / ${assists}**` + `\n`
-                                + `• Score: **${score}**` + `\n`
-                                + `• Headshots: **${headshots}**` + `\n`
-                                + `• Bodyshots: **${bodyshots}**` + `\n`
-                                + `• Legshots: **${legshots}**`
+                            value:
+                                `• K/D/A: **${kills} / ${deaths} / ${assists}**` +
+                                `\n` +
+                                `• Score: **${score}**` +
+                                `\n` +
+                                `• Headshots: **${headshots}**` +
+                                `\n` +
+                                `• Bodyshots: **${bodyshots}**` +
+                                `\n` +
+                                `• Legshots: **${legshots}**`
                         });
                     }
                     embed.addFields(fieldData);
-                    embed.setAuthor({name: `Recent Matches: ${decodeURIComponent(name)}#${tag}`});
+                    embed.setAuthor({
+                        name: `Recent Matches: ${decodeURIComponent(name)}#${tag}`
+                    });
                     embed.setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR);
-                    embed.setFooter({text: "Cypher Network", iconURL: this.client.user.displayAvatarURL()});
+                    embed.setFooter({
+                        text: "Cypher Network",
+                        iconURL: this.client.user.displayAvatarURL()
+                    });
                     embed.setTimestamp();
-                    return void await interaction.editReply({embeds: [embed]});
+                    return void (await interaction.editReply({
+                        embeds: [embed]
+                    }));
                 });
         } catch (e) {
-            const embed: MessageEmbed = EmbedUtil.getErrorEmbed("An error occurred while fetching competitive data.");
-            return void await interaction.editReply({embeds: [embed]});
+            const embed: MessageEmbed = EmbedUtil.getErrorEmbed(
+                "An error occurred while fetching competitive data."
+            );
+            return void (await interaction.editReply({ embeds: [embed] }));
         }
     }
 

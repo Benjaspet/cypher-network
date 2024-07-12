@@ -15,17 +15,27 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import {
+    ApplicationCommandData,
+    Client,
+    CommandInteraction,
+    MessageEmbed
+} from "discord.js";
+import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
 
-import {ApplicationCommandData, Client, CommandInteraction, MessageEmbed} from "discord.js";
-import {ApplicationCommand} from "../types/ApplicationCommand";
-import {ApplicationCommandOptionTypes} from "discord.js/typings/enums";
-import Command from "../structs/Command";
-import CypherNetworkConstants from "../constants/CypherNetworkConstants";
-import EmbedUtil from "../utils/EmbedUtil";
+import CypherNetworkConstants from "@constants/CypherNetworkConstants";
+
+import Command from "@structs/Command";
+
+import EmbedUtil from "@utils/EmbedUtil";
+
+import { ApplicationCommand } from "@defs/ApplicationCommand";
 import fetch from "node-fetch";
 
-export default class AccountCommand extends Command implements ApplicationCommand {
-
+export default class AccountCommand
+    extends Command
+    implements ApplicationCommand
+{
     private readonly client: Client;
 
     constructor(client: Client) {
@@ -57,15 +67,21 @@ export default class AccountCommand extends Command implements ApplicationComman
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        const name: string = encodeURIComponent(interaction.options.getString("name"));
-        const tag: string = encodeURIComponent(interaction.options.getString("tag"));
+        const name: string = encodeURIComponent(
+            interaction.options.getString("name")
+        );
+        const tag: string = encodeURIComponent(
+            interaction.options.getString("tag")
+        );
         const card: boolean = interaction.options.getBoolean("card") || false;
         await interaction.deferReply();
         try {
-            await fetch(`https://api.henrikdev.xyz/valorant/v1/account/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`)
+            await fetch(
+                `https://api.henrikdev.xyz/valorant/v1/account/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
+            )
                 .then((response) => response.json())
-                .then(async res => {
-                    const {data} = res;
+                .then(async (res) => {
+                    const { data } = res;
                     const puuid: string = data.puuid;
                     const region: string = data.region.toUpperCase();
                     const accountLevel: number = data.account_level;
@@ -75,32 +91,61 @@ export default class AccountCommand extends Command implements ApplicationComman
                     const cardId: string = data.card.id;
                     if (card) {
                         const embed: MessageEmbed = new MessageEmbed()
-                            .setAuthor({name: `${data.name}#${data.tag} [Level ${accountLevel}]`, iconURL: smallCard})
-                            .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
+                            .setAuthor({
+                                name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
+                                iconURL: smallCard
+                            })
+                            .setColor(
+                                CypherNetworkConstants.DEFAULT_EMBED_COLOR
+                            )
                             .setImage(wideCard)
                             .setThumbnail(largeCard)
-                            .setDescription(`• Small Card Link: [click here!](${smallCard})` + `\n`
-                                + `• Large Card Link: [click here!](${largeCard})` + `\n`
-                                + `• Wide Card Link: [click here!](${wideCard})`)
-                            .setFooter({text: "Cypher Network", iconURL: this.client.user.displayAvatarURL()})
+                            .setDescription(
+                                `• Small Card Link: [click here!](${smallCard})` +
+                                    `\n` +
+                                    `• Large Card Link: [click here!](${largeCard})` +
+                                    `\n` +
+                                    `• Wide Card Link: [click here!](${wideCard})`
+                            )
+                            .setFooter({
+                                text: "Cypher Network",
+                                iconURL: this.client.user.displayAvatarURL()
+                            })
                             .setTimestamp();
-                        return void await interaction.editReply({embeds: [embed]});
+                        return void (await interaction.editReply({
+                            embeds: [embed]
+                        }));
                     }
                     const embed: MessageEmbed = new MessageEmbed()
-                        .setAuthor({name: `${data.name}#${data.tag} [Level ${accountLevel}]`, iconURL: smallCard})
+                        .setAuthor({
+                            name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
+                            iconURL: smallCard
+                        })
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
                         .setImage(wideCard)
-                        .setDescription(`• Region: **${region}**` + `\n`
-                            + `• Account Level: **${accountLevel}**` + `\n`
-                            + `• PUUID: **${puuid}**` + `\n`
-                            + `• Card ID: **${cardId}**`)
-                        .setFooter({text: "Cypher Network", iconURL: this.client.user.displayAvatarURL()})
+                        .setDescription(
+                            `• Region: **${region}**` +
+                                `\n` +
+                                `• Account Level: **${accountLevel}**` +
+                                `\n` +
+                                `• PUUID: **${puuid}**` +
+                                `\n` +
+                                `• Card ID: **${cardId}**`
+                        )
+                        .setFooter({
+                            text: "Cypher Network",
+                            iconURL: this.client.user.displayAvatarURL()
+                        })
                         .setTimestamp();
-                    return void await interaction.editReply({embeds: [embed]});
+                    return void (await interaction.editReply({
+                        embeds: [embed]
+                    }));
                 });
         } catch (e) {
-            console.log(e)
-            return void await interaction.editReply({embeds: [EmbedUtil.getErrorEmbed("An error occurred.")]});
+            console.log(e);
+            return void (await interaction.editReply({
+                embeds: [EmbedUtil.getErrorEmbed("An error occurred.")]
+            }));
         }
     }
 

@@ -15,12 +15,11 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { ApplicationCommandData, CommandInteraction } from "discord.js";
 
-import {ApplicationCommand} from "../types/ApplicationCommand";
-import {ApplicationCommandData, CommandInteraction} from "discord.js";
+import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 export default abstract class Command implements ApplicationCommand {
-
     protected name: string;
     protected data: ApplicationCommandData;
 
@@ -50,5 +49,4 @@ export default abstract class Command implements ApplicationCommand {
      */
 
     abstract getName(): string;
-
 }

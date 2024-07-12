@@ -17,7 +17,6 @@
  */
 
 export default class Logger {
-
     public static info(content: string): void {
         console.log("[Mr. Code & Watch] " + content);
     }

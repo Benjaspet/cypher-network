@@ -17,12 +17,11 @@
  */
 
 export default class Utilities {
-
     public static sleep(ms): Promise<any> {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     public static beautifyNumber(num: number) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 }

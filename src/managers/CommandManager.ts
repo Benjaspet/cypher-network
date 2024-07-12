@@ -15,19 +15,21 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { Client, Collection } from "discord.js";
 
-import {Client, Collection } from "discord.js";
-import {ApplicationCommand} from "../types/ApplicationCommand";
-import Command from "../structs/Command";
-import AccountCommand from "../commands/AccountCommand";
-import CompetitiveCommand from "../commands/CompetitiveCommand";
-import MatchCommand from "../commands/MatchCommand";
-import MostRecentCommand from "../commands/MostRecentCommand";
-import HistoryCommand from "../commands/HistoryCommand";
+import AccountCommand from "@commands/AccountCommand";
+import CompetitiveCommand from "@commands/CompetitiveCommand";
+import HistoryCommand from "@commands/HistoryCommand";
+import MatchCommand from "@commands/MatchCommand";
+import MostRecentCommand from "@commands/MostRecentCommand";
+
+import Command from "@structs/Command";
+
+import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 export default class CommandManager {
-
-    public static commands: Collection<string, ApplicationCommand> = new Collection<string, ApplicationCommand>();
+    public static commands: Collection<string, ApplicationCommand> =
+        new Collection<string, ApplicationCommand>();
     private readonly client: Client;
 
     constructor(client: Client) {

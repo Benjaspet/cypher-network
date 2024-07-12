@@ -15,11 +15,11 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { Client, Intents } from "discord.js";
 
-import {Client, Intents} from "discord.js";
-import IntentUtil from "./utils/IntentUtil";
 import ApplicationManager from "./managers/ApplicationManager";
 import EventManager from "./managers/EventManager";
+import IntentUtil from "./utils/IntentUtil";
 
 const client: Client = new Client({
     partials: IntentUtil.getPartials(),

@@ -15,8 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-
-import {Client, ClientEvents} from "discord.js";
+import { Client, ClientEvents } from "discord.js";
 
 export interface IEvent {
     name: keyof ClientEvents;

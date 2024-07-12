@@ -15,11 +15,10 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-
-import {ApplicationCommandData, CommandInteraction} from "discord.js";
+import { ApplicationCommandData, CommandInteraction } from "discord.js";
 
 export interface ApplicationCommand {
-    getName(): string,
-    getCommandData(): ApplicationCommandData,
-    execute(event: CommandInteraction): void
+    getName(): string;
+    getCommandData(): ApplicationCommandData;
+    execute(event: CommandInteraction): void;
 }
