@@ -1,0 +1,29 @@
+{
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "jsxSingleQuote": false,
+    "bracket-same-line": false,
+    "semi": true,
+    "singleQuote": false,
+    "tabWidth": 4,
+    "trailingComma": "none",
+    "useTabs": false,
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": [
+        "bun",
+        "discord.js",
+        "^@discordjs/(.*)$",
+        "^@commands/(.*)$",
+        "^@constants/(.*)$",
+        "^@events/(.*)$",
+        "^@interfaces/(.*)$",
+        "^@managers/(.*)$",
+        "^@structs/(.*)$",
+        "^@utils/(.*)$",
+        "^@types/(.*)$",
+        "^@app/(.*)$",
+        "<THIRD_PARTY_MODULES>"
+    ]
+}
