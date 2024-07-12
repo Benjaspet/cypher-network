@@ -22,7 +22,7 @@
         "^@managers/(.*)$",
         "^@structs/(.*)$",
         "^@utils/(.*)$",
-        "^@types/(.*)$",
+        "^@defs/(.*)$",
         "^@app/(.*)$",
         "<THIRD_PARTY_MODULES>"
     ]

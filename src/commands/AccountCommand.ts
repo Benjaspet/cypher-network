@@ -30,6 +30,7 @@ import Command from "@structs/Command";
 import EmbedUtil from "@utils/EmbedUtil";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
+
 import fetch from "node-fetch";
 
 export default class AccountCommand
