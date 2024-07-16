@@ -17,6 +17,8 @@
  */
 import { Client } from "discord.js";
 
+import { Routes } from "discord-api-types/v10";
+
 import { REST } from "@discordjs/rest";
 
 import Config from "@structs/Config";
@@ -24,8 +26,6 @@ import Logger from "@structs/Logger";
 
 import SlashCommandUtil from "@utils/SlashCommandUtil";
 import Utilities from "@utils/Utilities";
-
-import { Routes } from "discord-api-types/v10";
 
 type Action = {
     delete: boolean;

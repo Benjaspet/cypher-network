@@ -22,6 +22,8 @@ import {
     EmbedBuilder
 } from "discord.js";
 
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
+
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
 import Command from "@structs/Command";
@@ -30,7 +32,6 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
-import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import fetch from "node-fetch";
 
 export default class HistoryCommand

@@ -14,6 +14,7 @@
     "importOrder": [
         "bun",
         "discord.js",
+        "discord-api-types",
         "^@discordjs/(.*)$",
         "^@commands/(.*)$",
         "^@constants/(.*)$",
