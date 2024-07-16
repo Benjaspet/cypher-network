@@ -25,20 +25,26 @@ import Logger from "@structs/Logger";
 import SlashCommandUtil from "@utils/SlashCommandUtil";
 import Utilities from "@utils/Utilities";
 
-import { Routes } from "discord-api-types/v9";
+import { Routes } from "discord-api-types/v10";
+
+type Action = {
+    delete: boolean;
+    guild: boolean;
+    global: boolean;
+};
 
 export default class DeployManager {
     private readonly client: Client;
-    public slashData: object[];
-    public action: any = {
-        deploy: true,
+    public slashData: any[];
+    public action: Action = {
+        global: true,
         delete: false,
         guild: true
     };
-    private clientId: any = Config.env("CLIENT-ID");
-    private guildId: any = Config.env("GUILD-ID");
+    private clientId = Config.get("clientId");
+    private guildId = Config.get("guildId");
 
-    constructor(client: Client, slashData: object[], action: object) {
+    constructor(client: Client, slashData: any[], action: Action) {
         this.client = client;
         this.slashData = slashData;
         this.action = action;
@@ -46,8 +52,10 @@ export default class DeployManager {
     }
 
     private async init(): Promise<void> {
-        const rest = new REST({ version: "9" }).setToken(Config.env("TOKEN"));
-        if (this.action.deploy) {
+        const rest = new REST({ version: "10" })
+            .setToken(Config.env("TOKEN"));
+
+        if (!this.action.delete) {
             if (this.action.guild) {
                 try {
                     Logger.info("Refreshing all guild slash commands..");
@@ -69,7 +77,7 @@ export default class DeployManager {
                 } catch (error: any) {
                     Logger.error(error);
                 }
-            } else {
+            } else if (this.action.global) {
                 try {
                     Logger.info("Refreshing all global slash commands..");
                     await rest.put(Routes.applicationCommands(this.clientId), {
@@ -85,7 +93,7 @@ export default class DeployManager {
                     Logger.error(error);
                 }
             }
-        } else if (this.action.delete && !this.action.deploy) {
+        } else {
             if (this.action.guild) {
                 try {
                     Logger.info("Deleting all guild slash commands...");
@@ -104,7 +112,7 @@ export default class DeployManager {
                 } catch (error: any) {
                     Logger.error(error);
                 }
-            } else {
+            } else if (this.action.global) {
                 try {
                     Logger.info("Deleting all global slash commands...");
                     await rest.put(Routes.applicationCommands(this.clientId), {

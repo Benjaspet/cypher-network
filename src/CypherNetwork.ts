@@ -20,6 +20,9 @@ import { Client } from "discord.js";
 import ApplicationManager from "./managers/ApplicationManager";
 import EventManager from "./managers/EventManager";
 import IntentUtil from "./utils/IntentUtil";
+import Config from "@structs/Config";
+
+await Config.parse();
 
 const client: Client = new Client({
     partials: IntentUtil.getPartials(),
