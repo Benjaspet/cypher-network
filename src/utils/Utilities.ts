@@ -17,7 +17,7 @@
  */
 
 export default class Utilities {
-    public static sleep(ms): Promise<any> {
+    public static sleep(ms: number): Promise<any> {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 

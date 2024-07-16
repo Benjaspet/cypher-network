@@ -16,13 +16,10 @@
  * credit is given to the original author(s).
  */
 import {
-    ButtonInteraction,
     Client,
     ClientEvents,
-    CommandInteraction,
     GuildMember,
-    Interaction,
-    MessageEmbed
+    Interaction
 } from "discord.js";
 
 import { IEvent } from "@interfaces/IEvent";
@@ -30,8 +27,6 @@ import { IEvent } from "@interfaces/IEvent";
 import CommandManager from "@managers/CommandManager";
 
 import EmbedUtil from "@utils/EmbedUtil";
-
-import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 export default class InteractionEvent implements IEvent {
     public name: keyof ClientEvents;
@@ -44,26 +39,22 @@ export default class InteractionEvent implements IEvent {
         this.client = client;
     }
 
-    public async execute(interaction: Interaction | any): Promise<void> {
+    public async execute(interaction: Interaction): Promise<void> {
         if (interaction.inGuild()) {
             if (interaction.isCommand()) {
                 if (interaction.member instanceof GuildMember) {
                     const name: string = interaction.commandName;
-                    const command: ApplicationCommand =
-                        CommandManager.commands.get(name);
-                    if (command != null && interaction.isCommand()) {
+                    const command = CommandManager.commands.get(name);
+                    if (command != undefined && interaction.isCommand()) {
                         command.execute(interaction);
                     }
                 }
             }
         } else {
-            const embed: MessageEmbed = EmbedUtil.getDefaultEmbed(
+            const embed = EmbedUtil.getDefaultEmbed(
                 "Please run this command in a guild."
             );
-            if (
-                interaction instanceof CommandInteraction ||
-                interaction instanceof ButtonInteraction
-            ) {
+            if (interaction.isCommand() || interaction.isButton()) {
                 return void (await interaction.reply({ embeds: [embed] }));
             } else return;
         }

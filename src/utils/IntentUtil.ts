@@ -17,9 +17,8 @@
  */
 import {
     BitFieldResolvable,
-    Intents,
     MessageMentionTypes,
-    PartialTypes
+    Partials
 } from "discord.js";
 
 export default class IntentUtil {
@@ -27,8 +26,8 @@ export default class IntentUtil {
         return [];
     }
 
-    public static getPartials(): PartialTypes[] {
-        return ["CHANNEL"];
+    public static getPartials(): Partials[] {
+        return [Partials.Channel];
     }
 
     public static getParsedMentions(): MessageMentionTypes[] {

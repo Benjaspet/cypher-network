@@ -18,10 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction,
-    MessageEmbed
+    CommandInteraction, EmbedBuilder
 } from "discord.js";
-import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
@@ -32,6 +30,7 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 import fetch from "node-fetch";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export default class AccountCommand
     extends Command
@@ -47,19 +46,19 @@ export default class AccountCommand
                 {
                     name: "name",
                     description: "The user's name'.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "tag",
                     description: "The user's tag.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "card",
                     description: "Display only the user's card data.",
-                    type: ApplicationCommandOptionTypes.BOOLEAN,
+                    type: ApplicationCommandOptionType.Boolean,
                     required: false
                 }
             ]
@@ -68,12 +67,15 @@ export default class AccountCommand
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
+        if (!interaction.isChatInputCommand()) return;
+
         const name: string = encodeURIComponent(
-            interaction.options.getString("name")
+            interaction.options.getString("name")!
         );
         const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")
+            interaction.options.getString("tag")!
         );
+
         const card: boolean = interaction.options.getBoolean("card") || false;
         await interaction.deferReply();
         try {
@@ -91,7 +93,7 @@ export default class AccountCommand
                     const wideCard: string = data.card.wide;
                     const cardId: string = data.card.id;
                     if (card) {
-                        const embed: MessageEmbed = new MessageEmbed()
+                        const embed = new EmbedBuilder()
                             .setAuthor({
                                 name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
                                 iconURL: smallCard
@@ -110,14 +112,15 @@ export default class AccountCommand
                             )
                             .setFooter({
                                 text: "Cypher Network",
-                                iconURL: this.client.user.displayAvatarURL()
+                                iconURL: this.client.user?.displayAvatarURL()
                             })
-                            .setTimestamp();
+                            .setTimestamp()
+                            .toJSON();
                         return void (await interaction.editReply({
                             embeds: [embed]
                         }));
                     }
-                    const embed: MessageEmbed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
                             iconURL: smallCard
@@ -135,7 +138,7 @@ export default class AccountCommand
                         )
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user.displayAvatarURL()
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
                         .setTimestamp();
                     return void (await interaction.editReply({

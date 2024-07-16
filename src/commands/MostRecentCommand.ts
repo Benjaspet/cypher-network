@@ -18,10 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction,
-    MessageEmbed
+    CommandInteraction, EmbedBuilder
 } from "discord.js";
-import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
@@ -32,6 +30,7 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 import fetch from "node-fetch";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export default class MostRecentCommand
     extends Command
@@ -47,19 +46,19 @@ export default class MostRecentCommand
                 {
                     name: "name",
                     description: "The player's name.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "tag",
                     description: "The player's tag.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "region",
                     description: "The region of this player.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
                         {
@@ -94,13 +93,15 @@ export default class MostRecentCommand
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        const name: string = encodeURIComponent(
-            interaction.options.getString("name")
+        if (!interaction.isChatInputCommand()) return;
+
+        const name = encodeURIComponent(
+            interaction.options.getString("name")!
         );
-        const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")
+        const tag = encodeURIComponent(
+            interaction.options.getString("tag")!
         );
-        const region: string = interaction.options.getString("region");
+        const region = interaction.options.getString("region")!;
         await interaction.deferReply();
         try {
             await fetch(
@@ -130,7 +131,7 @@ export default class MostRecentCommand
                     const damageReceived: number = match.stats.damage.received;
                     const redScore: number = match.teams.red;
                     const blueScore: number = match.teams.blue;
-                    const embed: MessageEmbed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Recent Match: ${decodeURIComponent(name)}#${tag}`,
                             iconURL: characterIcon
@@ -184,7 +185,7 @@ export default class MostRecentCommand
                         ])
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user.displayAvatarURL()
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
                         .setTimestamp();
                     return void (await interaction.editReply({
@@ -192,7 +193,7 @@ export default class MostRecentCommand
                     }));
                 });
         } catch (e) {
-            const embed: MessageEmbed = EmbedUtil.getErrorEmbed(
+            const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while fetching competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));

@@ -15,7 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { Client, ClientEvents, Presence } from "discord.js";
+import { ActivityType, Client, ClientEvents, Presence } from "discord.js";
 
 import { IEvent } from "@interfaces/IEvent";
 
@@ -38,12 +38,12 @@ export default class ReadyEvent implements IEvent {
         this.client = client;
     }
 
-    public async execute(): Promise<void> {
+    public execute() {
         Logger.clear();
-        Logger.info(`Logged in as ${this.client.user.tag}.`);
+        Logger.info(`Logged in as ${this.client.user?.tag ?? "Unknown"}.`);
         this.handlePresence();
         new CommandManager(this.client);
-        await this.handleApplicationCommands();
+        this.handleApplicationCommands();
     }
 
     private handlePresence(): void {
@@ -54,18 +54,18 @@ export default class ReadyEvent implements IEvent {
     }
 
     private async updatePresence(): Promise<Presence | undefined> {
-        const activity = Config.get("ACTIVITY");
-        return this.client.user.setActivity({
-            type: "WATCHING",
+        const activity = Config.env("ACTIVITY");
+        return this.client.user?.setActivity({
+            type: ActivityType.Watching,
             name: activity
         });
     }
 
-    private async handleApplicationCommands() {
+    private handleApplicationCommands() {
         if (
-            JSON.parse(Config.get("DEPLOY-APPLICATION-COMMANDS-GUILD")) == true
+            JSON.parse(Config.env("DEPLOY-APPLICATION-COMMANDS-GUILD")) == true
         ) {
-            await new DeployManager(
+            new DeployManager(
                 this.client,
                 SlashCommandUtil.getAllSlashCommandData(this.client),
                 {
@@ -75,9 +75,9 @@ export default class ReadyEvent implements IEvent {
                 }
             );
         } else if (
-            JSON.parse(Config.get("DEPLOY-APPLICATION-COMMANDS-GLOBAL")) == true
+            JSON.parse(Config.env("DEPLOY-APPLICATION-COMMANDS-GLOBAL")) == true
         ) {
-            await new DeployManager(
+            new DeployManager(
                 this.client,
                 SlashCommandUtil.getAllSlashCommandData(this.client),
                 {
@@ -87,21 +87,21 @@ export default class ReadyEvent implements IEvent {
                 }
             );
         } else if (
-            JSON.parse(Config.get("DELETE-APPLICATION-COMMANDS-GUILD")) == true
+            JSON.parse(Config.env("DELETE-APPLICATION-COMMANDS-GUILD")) == true
         ) {
-            await new DeployManager(
+            new DeployManager(
                 this.client,
                 SlashCommandUtil.getAllSlashCommandData(this.client),
                 {
-                    deploy: false,
                     delete: true,
+                    deploy: false,
                     guild: true
                 }
             );
         } else if (
-            JSON.parse(Config.get("DELETE-APPLICATION-COMMANDS-GLOBAL")) == true
+            JSON.parse(Config.env("DELETE-APPLICATION-COMMANDS-GLOBAL")) == true
         ) {
-            await new DeployManager(
+            new DeployManager(
                 this.client,
                 SlashCommandUtil.getAllSlashCommandData(this.client),
                 {

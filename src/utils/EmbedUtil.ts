@@ -15,20 +15,24 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { MessageEmbed } from "discord.js";
+
+import { Colors, EmbedBuilder } from "discord.js";
+import { APIEmbed } from "discord-api-types/v10";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
 export default class EmbedUtil {
-    public static getErrorEmbed(content: string): MessageEmbed {
-        return new MessageEmbed()
+    public static getErrorEmbed(content: string): APIEmbed {
+        return new EmbedBuilder()
             .setDescription(`${CypherNetworkConstants.EMOJI_ERROR} ${content}`)
-            .setColor("RED");
+            .setColor(Colors.Red)
+            .toJSON();
     }
 
-    public static getDefaultEmbed(description: string): MessageEmbed {
-        return new MessageEmbed()
+    public static getDefaultEmbed(description: string): APIEmbed {
+        return new EmbedBuilder()
             .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
-            .setDescription(description);
+            .setDescription(description)
+            .toJSON();
     }
 }

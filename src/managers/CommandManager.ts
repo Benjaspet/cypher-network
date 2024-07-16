@@ -30,10 +30,8 @@ import { ApplicationCommand } from "@defs/ApplicationCommand";
 export default class CommandManager {
     public static commands: Collection<string, ApplicationCommand> =
         new Collection<string, ApplicationCommand>();
-    private readonly client: Client;
 
     constructor(client: Client) {
-        this.client = client;
         CommandManager.registerCommands([
             new AccountCommand(client),
             new CompetitiveCommand(client),

@@ -15,7 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { Client, Intents } from "discord.js";
+import { Client } from "discord.js";
 
 import ApplicationManager from "./managers/ApplicationManager";
 import EventManager from "./managers/EventManager";

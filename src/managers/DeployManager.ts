@@ -35,17 +35,18 @@ export default class DeployManager {
         delete: false,
         guild: true
     };
-    private clientId: any = Config.get("CLIENT-ID");
-    private guildId: any = Config.get("GUILD-ID");
+    private clientId: any = Config.env("CLIENT-ID");
+    private guildId: any = Config.env("GUILD-ID");
 
     constructor(client: Client, slashData: object[], action: object) {
+        this.client = client;
         this.slashData = slashData;
         this.action = action;
         this.init().then(() => {});
     }
 
     private async init(): Promise<void> {
-        const rest = new REST({ version: "9" }).setToken(Config.get("TOKEN"));
+        const rest = new REST({ version: "9" }).setToken(Config.env("TOKEN"));
         if (this.action.deploy) {
             if (this.action.guild) {
                 try {
@@ -65,7 +66,7 @@ export default class DeployManager {
                     Logger.info(
                         "Successfully updated all guild slash commands."
                     );
-                } catch (error) {
+                } catch (error: any) {
                     Logger.error(error);
                 }
             } else {
@@ -80,7 +81,7 @@ export default class DeployManager {
                     Logger.info(
                         "Successfully updated all global slash commands."
                     );
-                } catch (error) {
+                } catch (error: any) {
                     Logger.error(error);
                 }
             }
@@ -100,7 +101,7 @@ export default class DeployManager {
                     Logger.info(
                         "Successfully deleted all guild slash commands."
                     );
-                } catch (error) {
+                } catch (error: any) {
                     Logger.error(error);
                 }
             } else {
@@ -112,7 +113,7 @@ export default class DeployManager {
                     Logger.info(
                         "Successfully deleted all global slash commands."
                     );
-                } catch (error) {
+                } catch (error: any) {
                     Logger.error(error);
                 }
             }

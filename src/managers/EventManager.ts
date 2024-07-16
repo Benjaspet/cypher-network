@@ -31,7 +31,7 @@ export default class EventManager {
     private async initAllEvents(): Promise<any> {
         this.client
             .on("ready", async () => {
-                await new ReadyEvent(this.client, "ready", true).execute();
+                new ReadyEvent(this.client, "ready", true).execute();
             })
             .on("interactionCreate", async (interaction) => {
                 if (interaction.isCommand()) {

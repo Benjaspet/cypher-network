@@ -18,11 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction,
-    EmbedFieldData,
-    MessageEmbed
+    CommandInteraction, EmbedBuilder
 } from "discord.js";
-import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
@@ -33,6 +30,7 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 import fetch from "node-fetch";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export default class HistoryCommand
     extends Command
@@ -48,19 +46,19 @@ export default class HistoryCommand
                 {
                     name: "name",
                     description: "The player's name.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "tag",
                     description: "The player's tag.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "region",
                     description: "The region of this player.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
                         {
@@ -95,13 +93,15 @@ export default class HistoryCommand
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
+        if (!interaction.isChatInputCommand()) return;
+
         const name: string = encodeURIComponent(
-            interaction.options.getString("name")
+            interaction.options.getString("name")!
         );
         const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")
+            interaction.options.getString("tag")!
         );
-        const region: string = interaction.options.getString("region");
+        const region: string = interaction.options.getString("region")!;
         await interaction.deferReply();
         try {
             await fetch(
@@ -112,8 +112,8 @@ export default class HistoryCommand
                     const { data } = res;
                     const matches: any[] = data;
                     let i = matches.length > 10 ? 10 : matches.length;
-                    let fieldData: EmbedFieldData[] = [];
-                    let embed: MessageEmbed = new MessageEmbed();
+                    let fieldData = [];
+                    let embed = new EmbedBuilder();
                     for (let j = 0; j < i; j++) {
                         const currentMatch = matches[j];
                         const p: any = currentMatch.players.all_players.find(
@@ -148,15 +148,15 @@ export default class HistoryCommand
                     embed.setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR);
                     embed.setFooter({
                         text: "Cypher Network",
-                        iconURL: this.client.user.displayAvatarURL()
+                        iconURL: this.client.user?.displayAvatarURL()
                     });
                     embed.setTimestamp();
                     return void (await interaction.editReply({
-                        embeds: [embed]
+                        embeds: [embed.toJSON()]
                     }));
                 });
         } catch (e) {
-            const embed: MessageEmbed = EmbedUtil.getErrorEmbed(
+            const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while fetching competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));

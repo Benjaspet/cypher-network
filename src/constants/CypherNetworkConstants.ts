@@ -15,15 +15,13 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { ColorResolvable } from "discord.js";
+import { HexColorString } from "discord.js";
 
 import Config from "@structs/Config";
 
 export default class CypherNetworkConstants {
-    public static TOKEN: string = Config.get("TOKEN");
-    public static DEFAULT_EMBED_COLOR: ColorResolvable = Config.get(
-        "DEFAULT-EMBED-COLOR"
-    );
-    public static EMOJI_SUCCESS: string = Config.get("EMOJI-SUCCESS");
-    public static EMOJI_ERROR: string = Config.get("EMOJI-ERROR");
+    public static TOKEN = Config.env("TOKEN");
+    public static DEFAULT_EMBED_COLOR = Config.get("embedColor") as HexColorString;
+    public static EMOJI_SUCCESS = Config.get("emojis").success;
+    public static EMOJI_ERROR = Config.get("emojis").error;
 }

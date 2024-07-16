@@ -18,11 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction,
-    EmbedFieldData,
-    MessageEmbed
+    CommandInteraction, EmbedBuilder
 } from "discord.js";
-import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
@@ -33,6 +30,7 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 import fetch from "node-fetch";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export default class CompetitiveCommand
     extends Command
@@ -48,19 +46,19 @@ export default class CompetitiveCommand
                 {
                     name: "name",
                     description: "The player's name.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "tag",
                     description: "The player's tag.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "region",
                     description: "The region of this player.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
                         {
@@ -95,14 +93,16 @@ export default class CompetitiveCommand
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
+        if (!interaction.isChatInputCommand()) return;
+
         const name: string = encodeURIComponent(
-            interaction.options.getString("name")
+            interaction.options.getString("name")!
         );
         const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")
+            interaction.options.getString("tag")!
         );
         const region: string = encodeURIComponent(
-            interaction.options.getString("region")
+            interaction.options.getString("region")!
         );
         await interaction.deferReply();
         try {
@@ -112,7 +112,7 @@ export default class CompetitiveCommand
                 .then((response) => response.json())
                 .then(async (res) => {
                     const { data } = res;
-                    const preparedFieldData: EmbedFieldData[] = [];
+                    const preparedFieldData = [];
                     const toAccess: any[] =
                         data.length > 10 ? data.slice(0, 10) : data;
                     for (const match of toAccess) {
@@ -132,7 +132,7 @@ export default class CompetitiveCommand
                                 `• Match ID: **${match.match_id}**`
                         });
                     }
-                    const embed: MessageEmbed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Competitive: ${decodeURIComponent(name)}#${tag}`,
                             iconURL: data[0].images.small
@@ -141,15 +141,16 @@ export default class CompetitiveCommand
                         .addFields(preparedFieldData)
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user.displayAvatarURL()
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
-                        .setTimestamp();
+                        .setTimestamp()
+                        .toJSON();
                     return void (await interaction.editReply({
                         embeds: [embed]
                     }));
                 });
         } catch (e) {
-            const embed: MessageEmbed = EmbedUtil.getErrorEmbed(
+            const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while fetching competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));

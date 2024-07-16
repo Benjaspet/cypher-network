@@ -18,11 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction,
-    EmbedFieldData,
-    MessageEmbed
+    CommandInteraction, EmbedBuilder
 } from "discord.js";
-import { ApplicationCommandOptionTypes } from "discord.js/typings/enums";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
 
@@ -33,6 +30,7 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
 import fetch from "node-fetch";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export default class MatchCommand
     extends Command
@@ -48,7 +46,7 @@ export default class MatchCommand
                 {
                     name: "id",
                     description: "The ID of the match.",
-                    type: ApplicationCommandOptionTypes.STRING,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]
@@ -57,7 +55,9 @@ export default class MatchCommand
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        const matchId: string = interaction.options.getString("id");
+        if (!interaction.isChatInputCommand()) return;
+
+        const matchId = interaction.options.getString("id")!;
         await interaction.deferReply();
         try {
             await fetch(
@@ -66,7 +66,7 @@ export default class MatchCommand
                 .then((response) => response.json())
                 .then(async (res) => {
                     const { data } = res;
-                    const preparedFieldData: EmbedFieldData[] = [];
+                    const preparedFieldData = [];
                     for (const player of data.players.all_players) {
                         preparedFieldData.push({
                             name: `Player: ${player.name}#${player.tag}`,
@@ -91,7 +91,7 @@ export default class MatchCommand
                                 `\n`
                         });
                     }
-                    const embed: MessageEmbed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Match Data: ${data.metadata.mode} [${data.metadata.region.toUpperCase()}]`,
                             iconURL:
@@ -120,16 +120,17 @@ export default class MatchCommand
                         )
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user.displayAvatarURL()
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
-                        .setTimestamp();
+                        .setTimestamp()
+                        .toJSON();
                     return void (await interaction.editReply({
                         embeds: [embed]
                     }));
                 });
         } catch (e) {
             console.log(e);
-            const embed: MessageEmbed = EmbedUtil.getErrorEmbed(
+            const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while match competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));
