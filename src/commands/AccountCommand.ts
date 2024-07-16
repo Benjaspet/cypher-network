@@ -18,7 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction, EmbedBuilder
+    CommandInteraction,
+    EmbedBuilder
 } from "discord.js";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
@@ -29,8 +30,8 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
-import fetch from "node-fetch";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import fetch from "node-fetch";
 
 export default class AccountCommand
     extends Command
@@ -99,7 +100,7 @@ export default class AccountCommand
                                 iconURL: smallCard
                             })
                             .setColor(
-                                CypherNetworkConstants.DEFAULT_EMBED_COLOR
+                                CypherNetworkConstants.DEFAULT_EMBED_COLOR()
                             )
                             .setImage(wideCard)
                             .setThumbnail(largeCard)
@@ -125,7 +126,7 @@ export default class AccountCommand
                             name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
                             iconURL: smallCard
                         })
-                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
+                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setImage(wideCard)
                         .setDescription(
                             `• Region: **${region}**` +

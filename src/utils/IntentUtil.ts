@@ -15,11 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import {
-    BitFieldResolvable,
-    MessageMentionTypes,
-    Partials
-} from "discord.js";
+import { BitFieldResolvable, MessageMentionTypes, Partials } from "discord.js";
 
 export default class IntentUtil {
     public static getIntents(): BitFieldResolvable<any, number> {

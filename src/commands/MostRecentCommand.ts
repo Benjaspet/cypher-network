@@ -18,7 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction, EmbedBuilder
+    CommandInteraction,
+    EmbedBuilder
 } from "discord.js";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
@@ -29,8 +30,8 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
-import fetch from "node-fetch";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import fetch from "node-fetch";
 
 export default class MostRecentCommand
     extends Command
@@ -95,12 +96,8 @@ export default class MostRecentCommand
     public async execute(interaction: CommandInteraction): Promise<void> {
         if (!interaction.isChatInputCommand()) return;
 
-        const name = encodeURIComponent(
-            interaction.options.getString("name")!
-        );
-        const tag = encodeURIComponent(
-            interaction.options.getString("tag")!
-        );
+        const name = encodeURIComponent(interaction.options.getString("name")!);
+        const tag = encodeURIComponent(interaction.options.getString("tag")!);
         const region = interaction.options.getString("region")!;
         await interaction.deferReply();
         try {
@@ -136,7 +133,7 @@ export default class MostRecentCommand
                             name: `Recent Match: ${decodeURIComponent(name)}#${tag}`,
                             iconURL: characterIcon
                         })
-                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
+                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(
                             `• Mode: **${mode}**` +
                                 `\n` +

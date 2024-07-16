@@ -52,8 +52,7 @@ export default class DeployManager {
     }
 
     private async init(): Promise<void> {
-        const rest = new REST({ version: "10" })
-            .setToken(Config.env("TOKEN"));
+        const rest = new REST({ version: "10" }).setToken(Config.env("TOKEN"));
 
         if (!this.action.delete) {
             if (this.action.guild) {

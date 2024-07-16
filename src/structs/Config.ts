@@ -15,10 +15,11 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { ActivityType } from "discord.js";
+
+import Logger from "@structs/Logger";
 
 import { writeFile } from "node:fs/promises";
-import { ActivityType } from "discord.js";
-import Logger from "@structs/Logger";
 
 type JsonConfig = {
     clientId: string;
@@ -66,15 +67,21 @@ export default class Config {
      */
     public static async parse(): Promise<void> {
         const configFile = Bun.file("config.json");
-        if (!await configFile.exists()) {
+        if (!(await configFile.exists())) {
             // Write the default configuration.
-            await writeFile("config.json", JSON.stringify(defaultConfig, null, 4));
-        } else try {
-            // Parse the configuration.
-            Config.instance = await configFile.json();
-        } catch (error: any) {
-            Logger.error("Unable to parse the configuration file. Using defaults.");
-        }
+            await writeFile(
+                "config.json",
+                JSON.stringify(defaultConfig, null, 4)
+            );
+        } else
+            try {
+                // Parse the configuration.
+                Config.instance = await configFile.json();
+            } catch (error: any) {
+                Logger.error(
+                    "Unable to parse the configuration file. Using defaults."
+                );
+            }
     }
 
     /**

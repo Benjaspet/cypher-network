@@ -15,12 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import {
-    Client,
-    ClientEvents,
-    GuildMember,
-    Interaction
-} from "discord.js";
+import { Client, ClientEvents, GuildMember, Interaction } from "discord.js";
 
 import { IEvent } from "@interfaces/IEvent";
 

@@ -18,7 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction, EmbedBuilder
+    CommandInteraction,
+    EmbedBuilder
 } from "discord.js";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
@@ -29,8 +30,8 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
-import fetch from "node-fetch";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import fetch from "node-fetch";
 
 export default class CompetitiveCommand
     extends Command
@@ -137,7 +138,7 @@ export default class CompetitiveCommand
                             name: `Competitive: ${decodeURIComponent(name)}#${tag}`,
                             iconURL: data[0].images.small
                         })
-                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
+                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .addFields(preparedFieldData)
                         .setFooter({
                             text: "Cypher Network",

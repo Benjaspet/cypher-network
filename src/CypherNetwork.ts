@@ -17,10 +17,11 @@
  */
 import { Client } from "discord.js";
 
+import Config from "@structs/Config";
+
 import ApplicationManager from "./managers/ApplicationManager";
 import EventManager from "./managers/EventManager";
 import IntentUtil from "./utils/IntentUtil";
-import Config from "@structs/Config";
 
 await Config.parse();
 

@@ -18,7 +18,8 @@
 import {
     ApplicationCommandData,
     Client,
-    CommandInteraction, EmbedBuilder
+    CommandInteraction,
+    EmbedBuilder
 } from "discord.js";
 
 import CypherNetworkConstants from "@constants/CypherNetworkConstants";
@@ -29,8 +30,8 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
 
-import fetch from "node-fetch";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import fetch from "node-fetch";
 
 export default class MatchCommand
     extends Command
@@ -97,7 +98,7 @@ export default class MatchCommand
                             iconURL:
                                 data.players.all_players[0].assets.agent.small
                         })
-                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR)
+                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(
                             `• Map: **${data.metadata.map}**` +
                                 `\n` +

@@ -18,11 +18,11 @@
 
 export default class Logger {
     public static info(content: string): void {
-        console.log("[Mr. Code & Watch] " + content);
+        console.log("[Cypher Network] " + content);
     }
 
     public static error(content: string): void {
-        console.error("[Mr. Code & Watch] " + content);
+        console.error("[Cypher Network] " + content);
     }
 
     public static clear(): void {

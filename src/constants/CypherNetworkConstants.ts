@@ -21,7 +21,8 @@ import Config from "@structs/Config";
 
 export default class CypherNetworkConstants {
     public static TOKEN = Config.env("TOKEN");
-    public static DEFAULT_EMBED_COLOR = Config.get("embedColor") as HexColorString;
-    public static EMOJI_SUCCESS = Config.get("emojis").success;
-    public static EMOJI_ERROR = Config.get("emojis").error;
+    public static DEFAULT_EMBED_COLOR = () =>
+        Config.get("embedColor") as HexColorString;
+    public static EMOJI_SUCCESS = () => Config.get("emojis").success;
+    public static EMOJI_ERROR = () => Config.get("emojis").error;
 }
