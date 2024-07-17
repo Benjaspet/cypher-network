@@ -27,6 +27,7 @@ import Command from "@structs/Command";
 
 import { ACommand } from "@defs/ACommand";
 import InfoCommand from "@commands/InfoCommand";
+import AgentCommand from "@commands/AgentCommand";
 
 export default class CommandManager {
     public static commands: Collection<string, ACommand> =
@@ -39,7 +40,8 @@ export default class CommandManager {
             new HistoryCommand(client),
             new MatchCommand(client),
             new MostRecentCommand(client),
-            new InfoCommand(client)
+            new InfoCommand(client),
+            new AgentCommand(client)
         ]);
     }
 
