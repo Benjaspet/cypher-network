@@ -26,6 +26,7 @@ import MostRecentCommand from "@commands/MostRecentCommand";
 import Command from "@structs/Command";
 
 import { ApplicationCommand } from "@defs/ApplicationCommand";
+import InfoCommand from "@commands/InfoCommand";
 
 export default class CommandManager {
     public static commands: Collection<string, ApplicationCommand> =
@@ -37,7 +38,8 @@ export default class CommandManager {
             new CompetitiveCommand(client),
             new HistoryCommand(client),
             new MatchCommand(client),
-            new MostRecentCommand(client)
+            new MostRecentCommand(client),
+            new InfoCommand(client)
         ]);
     }
 
