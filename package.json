@@ -1,7 +1,7 @@
 {
     "name": "cypher-network",
-    "author": "Ben Petrillo",
-    "version": "0.1.0",
+    "author": "Ben Petrillo, KingRainbow44",
+    "version": "1.9.0",
     "main": "src/CypherNetwork.ts",
     "description": "Keep tabs on your VALORANT data with ease.",
     "scripts": {
