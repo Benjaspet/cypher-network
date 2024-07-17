@@ -15,7 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { Client, Collection } from "discord.js";
+import { ApplicationCommandData, Client, Collection } from "discord.js";
 
 import AccountCommand from "@commands/AccountCommand";
 import CompetitiveCommand from "@commands/CompetitiveCommand";
@@ -39,6 +39,14 @@ export default class CommandManager {
             new MatchCommand(client),
             new MostRecentCommand(client)
         ]);
+    }
+
+    /**
+     * Returns the application command data for all known commands.
+     */
+    public static getCommands(): ApplicationCommandData[] {
+        return CommandManager.commands
+            .map((cmd) => cmd.getCommandData());
     }
 
     private static registerCommands(commands: Command[]): void {

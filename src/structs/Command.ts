@@ -41,12 +41,16 @@ export default abstract class Command implements ApplicationCommand {
      * @return ApplicationCommandData
      */
 
-    abstract getCommandData(): ApplicationCommandData;
+    public getCommandData(): ApplicationCommandData {
+        return this.data;
+    }
 
     /**
      * The name of this command.
      * @return string
      */
 
-    abstract getName(): string;
+    public getName(): string {
+        return this.name;
+    }
 }

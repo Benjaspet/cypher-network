@@ -15,8 +15,6 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { Client } from "discord.js";
-
 import { Routes } from "discord-api-types/v10";
 
 import { REST } from "@discordjs/rest";
@@ -24,8 +22,8 @@ import { REST } from "@discordjs/rest";
 import Config from "@structs/Config";
 import Logger from "@structs/Logger";
 
-import SlashCommandUtil from "@utils/SlashCommandUtil";
 import Utilities from "@utils/Utilities";
+import CommandManager from "@managers/CommandManager";
 
 type Action = {
     delete: boolean;
@@ -34,8 +32,6 @@ type Action = {
 };
 
 export default class DeployManager {
-    private readonly client: Client;
-    public slashData: any[];
     public action: Action = {
         global: true,
         delete: false,
@@ -44,9 +40,7 @@ export default class DeployManager {
     private clientId = Config.get("clientId");
     private guildId = Config.get("guildId");
 
-    constructor(client: Client, slashData: any[], action: Action) {
-        this.client = client;
-        this.slashData = slashData;
+    constructor(action: Action) {
         this.action = action;
         this.init().then(() => {});
     }
@@ -64,9 +58,7 @@ export default class DeployManager {
                             this.guildId
                         ),
                         {
-                            body: SlashCommandUtil.getAllSlashCommandData(
-                                this.client
-                            )
+                            body: CommandManager.getCommands()
                         }
                     );
                     await Utilities.sleep(1000);
@@ -80,9 +72,7 @@ export default class DeployManager {
                 try {
                     Logger.info("Refreshing all global slash commands..");
                     await rest.put(Routes.applicationCommands(this.clientId), {
-                        body: SlashCommandUtil.getAllSlashCommandData(
-                            this.client
-                        )
+                        body: CommandManager.getCommands()
                     });
                     await Utilities.sleep(1000);
                     Logger.info(

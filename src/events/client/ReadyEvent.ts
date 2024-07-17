@@ -25,8 +25,6 @@ import DeployManager from "@managers/DeployManager";
 import Config from "@structs/Config";
 import Logger from "@structs/Logger";
 
-import SlashCommandUtil from "@utils/SlashCommandUtil";
-
 export default class ReadyEvent implements IEvent {
     public name: keyof ClientEvents;
     public once: boolean;
@@ -62,9 +60,7 @@ export default class ReadyEvent implements IEvent {
     }
 
     private handleApplicationCommands() {
-        const settings = Config.get("deploy");
-        const commands = SlashCommandUtil.getAllSlashCommandData(this.client);
-        new DeployManager(this.client, commands, settings);
+        new DeployManager(Config.get("deploy"));
 
         Logger.info("Application commands loaded.");
     }

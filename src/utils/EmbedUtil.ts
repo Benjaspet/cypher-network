@@ -15,7 +15,7 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { Colors, EmbedBuilder } from "discord.js";
+import { Client, Colors, EmbedBuilder } from "discord.js";
 
 import { APIEmbed } from "discord-api-types/v10";
 
@@ -36,5 +36,18 @@ export default class EmbedUtil {
             .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
             .setDescription(description)
             .toJSON();
+    }
+
+    /**
+     * Creates a basic embed builder.
+     */
+    public static getEmbed(client: Client): EmbedBuilder {
+        return new EmbedBuilder()
+            .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
+            .setFooter({
+                text: "Cypher Network",
+                iconURL: client.user?.displayAvatarURL()
+            })
+            .setTimestamp();
     }
 }
