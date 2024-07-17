@@ -6,7 +6,7 @@
     "description": "Keep tabs on your VALORANT data with ease.",
     "scripts": {
         "lint": "prettier . -w",
-        "build": "bun build src/CypherNetwork.ts --outfile=dist/index.js --minify --target=bun",
+        "build": "bun build src/CypherNetwork.ts --outfile=dist/index.js --target=bun",
         "start": "bun run src/CypherNetwork.ts",
         "start:dev": "bun --watch run src/CypherNetwork.ts"
     },
