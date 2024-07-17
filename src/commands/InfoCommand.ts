@@ -1,5 +1,5 @@
 import Command from "@structs/Command";
-import { ApplicationCommand } from "@defs/ApplicationCommand";
+import { ACommand } from "@defs/ACommand";
 import { Client, CommandInteraction, version } from "discord.js";
 import EmbedUtil from "@utils/EmbedUtil";
 
@@ -12,7 +12,7 @@ function random() {
     return messages[Math.floor(Math.random() * messages.length)];
 }
 
-class InfoCommand extends Command implements ApplicationCommand {
+class InfoCommand extends Command implements ACommand {
     constructor(
         private readonly client: Client
     ) {

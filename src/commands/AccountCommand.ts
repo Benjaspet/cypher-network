@@ -16,7 +16,6 @@
  * credit is given to the original author(s).
  */
 import {
-    ApplicationCommandData,
     Client,
     CommandInteraction,
     EmbedBuilder
@@ -24,19 +23,19 @@ import {
 
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
-import CypherNetworkConstants from "@constants/CypherNetworkConstants";
+import CypherNetworkConstants from "@app/Constants";
 
 import Command from "@structs/Command";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
-import { ApplicationCommand } from "@defs/ApplicationCommand";
+import { ACommand } from "@defs/ACommand";
 
 import fetch from "node-fetch";
 
 export default class AccountCommand
     extends Command
-    implements ApplicationCommand
+    implements ACommand
 {
     private readonly client: Client;
 
@@ -153,13 +152,5 @@ export default class AccountCommand
                 embeds: [EmbedUtil.getErrorEmbed("An error occurred.")]
             }));
         }
-    }
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public getCommandData(): ApplicationCommandData {
-        return this.data;
     }
 }

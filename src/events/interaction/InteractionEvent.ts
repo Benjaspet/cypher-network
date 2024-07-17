@@ -17,7 +17,7 @@
  */
 import { Client, ClientEvents, GuildMember, Interaction } from "discord.js";
 
-import { IEvent } from "@interfaces/IEvent";
+import { IEvent } from "@defs/IEvent";
 
 import CommandManager from "@managers/CommandManager";
 

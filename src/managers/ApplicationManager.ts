@@ -1,7 +1,5 @@
 /*
- * Copyright © 2023 Ben Petrillo. All rights reserved.
- *
- * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
+ * Copyright © 2024 Ben Petrillo, KingRainbow44.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
@@ -12,14 +10,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * All portions of this software are available for public use, provided that
- * credit is given to the original author(s).
+ * All portions of this software are available for public use,
+ * provided that credit is given to the original author(s).
  */
+
 import { Client } from "discord.js";
 
-import CypherNetworkConstants from "@constants/CypherNetworkConstants";
+import { logger } from "@app/CypherNetwork";
 
-import Logger from "@structs/Logger";
+import CypherNetworkConstants from "@app/Constants";
 
 export default class ApplicationManager {
     private readonly client: Client;
@@ -28,8 +27,8 @@ export default class ApplicationManager {
         this.client = client;
     }
 
-    public login(): void {
-        Logger.clear();
-        this.client.login(CypherNetworkConstants.TOKEN).then(() => {});
+    public async login(): Promise<void> {
+        await this.client.login(CypherNetworkConstants.TOKEN);
+        logger.info("Logged in | Client ID: " + this.client.user?.id);
     }
 }

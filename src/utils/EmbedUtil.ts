@@ -19,7 +19,7 @@ import { Client, Colors, EmbedBuilder } from "discord.js";
 
 import { APIEmbed } from "discord-api-types/v10";
 
-import CypherNetworkConstants from "@constants/CypherNetworkConstants";
+import CypherNetworkConstants from "@app/Constants";
 
 export default class EmbedUtil {
     public static getErrorEmbed(content: string): APIEmbed {

@@ -15,18 +15,14 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { BitFieldResolvable, MessageMentionTypes, Partials } from "discord.js";
+import { HexColorString } from "discord.js";
 
-export default class IntentUtil {
-    public static getIntents(): BitFieldResolvable<any, number> {
-        return [];
-    }
+import Config from "@structs/Config";
 
-    public static getPartials(): Partials[] {
-        return [Partials.Channel];
-    }
-
-    public static getParsedMentions(): MessageMentionTypes[] {
-        return ["users", "roles", "everyone"];
-    }
+export default class Constants {
+    public static TOKEN = Config.env("TOKEN");
+    public static DEFAULT_EMBED_COLOR = () =>
+        Config.get("embedColor") as HexColorString;
+    public static EMOJI_SUCCESS = () => Config.get("emojis").success;
+    public static EMOJI_ERROR = () => Config.get("emojis").error;
 }

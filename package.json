@@ -12,11 +12,13 @@
     },
     "dependencies": {
         "@discordjs/rest": "^0.1.0-canary.0",
+        "discord-api-types": "^0.37.92",
         "discord.js": "^14.15.3",
-        "discord-api-types": "^0.37.92"
+        "tslog": "^4.9.3"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "@types/node-fetch": "^2.6.11",
         "bun-types": "^1.1.18",
         "prettier": "^3.3.2"
     }

@@ -17,9 +17,8 @@
  */
 import { ActivityType } from "discord.js";
 
-import Logger from "@structs/Logger";
-
 import { writeFile } from "node:fs/promises";
+import { logger } from "@app/CypherNetwork";
 
 type JsonConfig = {
     clientId: string;
@@ -78,7 +77,7 @@ export default class Config {
                 // Parse the configuration.
                 Config.instance = await configFile.json();
             } catch (error: any) {
-                Logger.error(
+                logger.error(
                     "Unable to parse the configuration file. Using defaults."
                 );
             }

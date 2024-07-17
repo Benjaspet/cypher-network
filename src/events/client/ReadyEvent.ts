@@ -17,13 +17,12 @@
  */
 import { Client, ClientEvents, Presence } from "discord.js";
 
-import { IEvent } from "@interfaces/IEvent";
+import { IEvent } from "@defs/IEvent";
 
 import CommandManager from "@managers/CommandManager";
 import DeployManager from "@managers/DeployManager";
 
 import Config from "@structs/Config";
-import Logger from "@structs/Logger";
 
 export default class ReadyEvent implements IEvent {
     public name: keyof ClientEvents;
@@ -37,8 +36,6 @@ export default class ReadyEvent implements IEvent {
     }
 
     public execute() {
-        Logger.clear();
-        Logger.info(`Logged in as ${this.client.user?.tag ?? "Unknown"}.`);
         this.handlePresence();
         new CommandManager(this.client);
         this.handleApplicationCommands();
@@ -61,7 +58,5 @@ export default class ReadyEvent implements IEvent {
 
     private handleApplicationCommands() {
         new DeployManager(Config.get("deploy"));
-
-        Logger.info("Application commands loaded.");
     }
 }

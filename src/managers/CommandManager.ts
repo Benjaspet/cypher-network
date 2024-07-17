@@ -25,12 +25,12 @@ import MostRecentCommand from "@commands/MostRecentCommand";
 
 import Command from "@structs/Command";
 
-import { ApplicationCommand } from "@defs/ApplicationCommand";
+import { ACommand } from "@defs/ACommand";
 import InfoCommand from "@commands/InfoCommand";
 
 export default class CommandManager {
-    public static commands: Collection<string, ApplicationCommand> =
-        new Collection<string, ApplicationCommand>();
+    public static commands: Collection<string, ACommand> =
+        new Collection<string, ACommand>();
 
     constructor(client: Client) {
         CommandManager.registerCommands([

@@ -15,13 +15,10 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
+import { ApplicationCommandData, CommandInteraction } from "discord.js";
 
-export default class Utilities {
-    public static sleep(ms: number): Promise<any> {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
-    public static beautifyNumber(num: number) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+export interface ACommand {
+    getName(): string;
+    getCommandData(): ApplicationCommandData;
+    execute(event: CommandInteraction): void;
 }

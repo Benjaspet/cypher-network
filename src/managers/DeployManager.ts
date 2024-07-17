@@ -20,10 +20,10 @@ import { Routes } from "discord-api-types/v10";
 import { REST } from "@discordjs/rest";
 
 import Config from "@structs/Config";
-import Logger from "@structs/Logger";
 
-import Utilities from "@utils/Utilities";
 import CommandManager from "@managers/CommandManager";
+
+import { logger } from "@app/CypherNetwork";
 
 type Action = {
     delete: boolean;
@@ -51,7 +51,7 @@ export default class DeployManager {
         if (!this.action.delete) {
             if (this.action.guild) {
                 try {
-                    Logger.info("Refreshing all guild slash commands..");
+                    logger.info("Refreshing all guild slash commands..");
                     await rest.put(
                         Routes.applicationGuildCommands(
                             this.clientId,
@@ -61,31 +61,29 @@ export default class DeployManager {
                             body: CommandManager.getCommands()
                         }
                     );
-                    await Utilities.sleep(1000);
-                    Logger.info(
-                        "Successfully updated all guild slash commands."
+                    logger.info(
+                        "Updated all guild slash commands."
                     );
                 } catch (error: any) {
-                    Logger.error(error);
+                    logger.error(error.message);
                 }
             } else if (this.action.global) {
                 try {
-                    Logger.info("Refreshing all global slash commands..");
+                    logger.info("Refreshing all global slash commands..");
                     await rest.put(Routes.applicationCommands(this.clientId), {
                         body: CommandManager.getCommands()
                     });
-                    await Utilities.sleep(1000);
-                    Logger.info(
-                        "Successfully updated all global slash commands."
+                    logger.info(
+                        "Updated all global slash commands."
                     );
                 } catch (error: any) {
-                    Logger.error(error);
+                    logger.error(error);
                 }
             }
         } else {
             if (this.action.guild) {
                 try {
-                    Logger.info("Deleting all guild slash commands...");
+                    logger.info("Deleting all guild slash commands...");
                     await rest.put(
                         Routes.applicationGuildCommands(
                             this.clientId,
@@ -95,23 +93,21 @@ export default class DeployManager {
                             body: []
                         }
                     );
-                    Logger.info(
-                        "Successfully deleted all guild slash commands."
+                    logger.info(
+                        "Deleted all guild slash commands."
                     );
                 } catch (error: any) {
-                    Logger.error(error);
+                    logger.error(error.message);
                 }
             } else if (this.action.global) {
                 try {
-                    Logger.info("Deleting all global slash commands...");
+                    logger.info("Deleting all global slash commands...");
                     await rest.put(Routes.applicationCommands(this.clientId), {
                         body: []
                     });
-                    Logger.info(
-                        "Successfully deleted all global slash commands."
-                    );
+                    logger.info("Deleted all global slash commands.")
                 } catch (error: any) {
-                    Logger.error(error);
+                    logger.error(error);
                 }
             }
         }
