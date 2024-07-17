@@ -19,9 +19,9 @@ import { Routes } from "discord-api-types/v10";
 
 import { REST } from "@discordjs/rest";
 
-import Config from "@structs/Config";
-
 import CommandManager from "@managers/CommandManager";
+
+import Config from "@structs/Config";
 
 import { logger } from "@app/CypherNetwork";
 
@@ -61,9 +61,7 @@ export default class DeployManager {
                             body: CommandManager.getCommands()
                         }
                     );
-                    logger.info(
-                        "Updated all guild slash commands."
-                    );
+                    logger.info("Updated all guild slash commands.");
                 } catch (error: any) {
                     logger.error(error.message);
                 }
@@ -73,9 +71,7 @@ export default class DeployManager {
                     await rest.put(Routes.applicationCommands(this.clientId), {
                         body: CommandManager.getCommands()
                     });
-                    logger.info(
-                        "Updated all global slash commands."
-                    );
+                    logger.info("Updated all global slash commands.");
                 } catch (error: any) {
                     logger.error(error);
                 }
@@ -93,9 +89,7 @@ export default class DeployManager {
                             body: []
                         }
                     );
-                    logger.info(
-                        "Deleted all guild slash commands."
-                    );
+                    logger.info("Deleted all guild slash commands.");
                 } catch (error: any) {
                     logger.error(error.message);
                 }
@@ -105,7 +99,7 @@ export default class DeployManager {
                     await rest.put(Routes.applicationCommands(this.clientId), {
                         body: []
                     });
-                    logger.info("Deleted all global slash commands.")
+                    logger.info("Deleted all global slash commands.");
                 } catch (error: any) {
                     logger.error(error);
                 }

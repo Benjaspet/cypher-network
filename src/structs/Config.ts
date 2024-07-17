@@ -17,8 +17,9 @@
  */
 import { ActivityType } from "discord.js";
 
-import { writeFile } from "node:fs/promises";
 import { logger } from "@app/CypherNetwork";
+
+import { writeFile } from "node:fs/promises";
 
 type JsonConfig = {
     clientId: string;
