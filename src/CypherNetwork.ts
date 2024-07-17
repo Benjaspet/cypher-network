@@ -13,13 +13,12 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import { Client, Partials } from "discord.js";
-
-import Config from "@structs/Config";
 
 import ApplicationManager from "@managers/ApplicationManager";
 import EventManager from "@managers/EventManager";
+
+import Config from "@structs/Config";
 
 import { ILogObj, Logger } from "tslog";
 
@@ -37,11 +36,15 @@ export const logger: Logger<ILogObj> = new Logger({
             INFO: ["bold", "blue"],
             DEBUG: ["bold", "green"],
             WARN: ["bold", "yellow"],
-            ERROR: ["bold", "red"],
+            ERROR: ["bold", "red"]
         },
-        yyyy: "magenta", mm: "magenta", dd: "magenta",
-        hh: "magenta", MM: "magenta", ss: "magenta",
-        filePathWithLine: "magenta",
+        yyyy: "magenta",
+        mm: "magenta",
+        dd: "magenta",
+        hh: "magenta",
+        MM: "magenta",
+        ss: "magenta",
+        filePathWithLine: "magenta"
     }
 });
 

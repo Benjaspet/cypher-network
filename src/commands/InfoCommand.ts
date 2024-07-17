@@ -1,7 +1,10 @@
-import Command from "@structs/Command";
-import { ACommand } from "@defs/ACommand";
 import { Client, CommandInteraction, version } from "discord.js";
+
+import Command from "@structs/Command";
+
 import EmbedUtil from "@utils/EmbedUtil";
+
+import { ACommand } from "@defs/ACommand";
 
 import messages from "@app/messages.json";
 
@@ -13,9 +16,7 @@ function random() {
 }
 
 class InfoCommand extends Command implements ACommand {
-    constructor(
-        private readonly client: Client
-    ) {
+    constructor(private readonly client: Client) {
         super("info", {
             name: "info",
             description: "Display basic bot information."
@@ -41,15 +42,17 @@ class InfoCommand extends Command implements ACommand {
             .addFields([
                 {
                     name: "Bot Information",
-                    value: `• Powered by DJS ${version}\n` +
-                    `• Developed by: Ponjo Studios\n` +
-                    `• Server count: ${serverCount}\n` +
-                    `• User count: ${userCount}`
+                    value:
+                        `• Powered by DJS ${version}\n` +
+                        `• Developed by: Ponjo Studios\n` +
+                        `• Server count: ${serverCount}\n` +
+                        `• User count: ${userCount}`
                 },
                 {
                     name: "Links",
-                    value: "• [Terms of Service](https://docs.benpetrillo.dev/cypher-network/tos.html)\n" +
-                    "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)"
+                    value:
+                        "• [Terms of Service](https://docs.benpetrillo.dev/cypher-network/tos.html)\n" +
+                        "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)"
                 }
             ])
             .toJSON();

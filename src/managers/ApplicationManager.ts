@@ -13,12 +13,10 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import { Client } from "discord.js";
 
-import { logger } from "@app/CypherNetwork";
-
 import CypherNetworkConstants from "@app/Constants";
+import { logger } from "@app/CypherNetwork";
 
 export default class ApplicationManager {
     private readonly client: Client;

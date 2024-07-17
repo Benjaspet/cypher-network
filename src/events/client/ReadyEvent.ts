@@ -17,12 +17,12 @@
  */
 import { Client, ClientEvents, Presence } from "discord.js";
 
-import { IEvent } from "@defs/IEvent";
-
 import CommandManager from "@managers/CommandManager";
 import DeployManager from "@managers/DeployManager";
 
 import Config from "@structs/Config";
+
+import { IEvent } from "@defs/IEvent";
 
 export default class ReadyEvent implements IEvent {
     public name: keyof ClientEvents;

@@ -17,11 +17,11 @@
  */
 import { Client, ClientEvents, GuildMember, Interaction } from "discord.js";
 
-import { IEvent } from "@defs/IEvent";
-
 import CommandManager from "@managers/CommandManager";
 
 import EmbedUtil from "@utils/EmbedUtil";
+
+import { IEvent } from "@defs/IEvent";
 
 export default class InteractionEvent implements IEvent {
     public name: keyof ClientEvents;
