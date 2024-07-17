@@ -33,7 +33,7 @@ export default class MostRecentCommand extends Command implements ACommand {
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("mostrecent", {
+        super({
             name: "mostrecent",
             description: "Fetch the provided player's most recent match data.",
             options: [

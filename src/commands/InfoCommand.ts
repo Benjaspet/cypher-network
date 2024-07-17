@@ -17,7 +17,7 @@ function random() {
 
 class InfoCommand extends Command implements ACommand {
     constructor(private readonly client: Client) {
-        super("info", {
+        super({
             name: "info",
             description: "Display basic bot information."
         });

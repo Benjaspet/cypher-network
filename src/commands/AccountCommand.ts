@@ -33,7 +33,7 @@ export default class AccountCommand extends Command implements ACommand {
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("account", {
+        super({
             name: "account",
             description: "Get VALORANT account details.",
             options: [

@@ -33,7 +33,7 @@ export default class MatchCommand extends Command implements ACommand {
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("match", {
+        super({
             name: "match",
             description: "Get VALORANT match data by match ID.",
             options: [

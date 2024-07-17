@@ -41,7 +41,7 @@ export default class AgentCommand
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("agent", {
+        super({
             name: "agent",
             description: "Fetch agent details from Valorant.",
             options: [

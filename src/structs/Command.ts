@@ -20,11 +20,9 @@ import { ApplicationCommandData, CommandInteraction } from "discord.js";
 import { ACommand } from "@defs/ACommand";
 
 export default abstract class Command implements ACommand {
-    protected name: string;
     protected data: ApplicationCommandData;
 
-    protected constructor(name: string, data: ApplicationCommandData) {
-        this.name = name;
+    protected constructor(data: ApplicationCommandData) {
         this.data = data;
     }
 
@@ -51,6 +49,6 @@ export default abstract class Command implements ACommand {
      */
 
     public getName(): string {
-        return this.name;
+        return this.data.name;
     }
 }

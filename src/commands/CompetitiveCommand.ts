@@ -33,7 +33,7 @@ export default class CompetitiveCommand extends Command implements ACommand {
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("competitive", {
+        super({
             name: "competitive",
             description: "Fetch recent competitive match data for VALORANT.",
             options: [

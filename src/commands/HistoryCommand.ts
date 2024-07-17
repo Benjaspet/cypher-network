@@ -33,7 +33,7 @@ export default class HistoryCommand extends Command implements ACommand {
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("history", {
+        super({
             name: "history",
             description: "Fetch the provided player's most recent matches.",
             options: [
