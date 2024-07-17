@@ -41,15 +41,15 @@ class InfoCommand extends Command implements ApplicationCommand {
             .addFields([
                 {
                     name: "Bot Information",
-                    value: `• Powered by DJS ${version}
-                    • Developed by: Ponjo Studios
-                    • Server count: ${serverCount}
-                    • User count: ${userCount}`
+                    value: `• Powered by DJS ${version}\n` +
+                    `• Developed by: Ponjo Studios\n` +
+                    `• Server count: ${serverCount}\n` +
+                    `• User count: ${userCount}`
                 },
                 {
                     name: "Links",
-                    value: `• [Terms of Service](https://docs.benpetrillo.dev/cypher-network/tos.html)
-                    • [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)`
+                    value: "• [Terms of Service](https://docs.benpetrillo.dev/cypher-network/tos.html)\n" +
+                    "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)"
                 }
             ])
             .toJSON();
