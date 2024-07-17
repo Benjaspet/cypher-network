@@ -17,9 +17,9 @@
  */
 import { ApplicationCommandData, CommandInteraction } from "discord.js";
 
-import { ApplicationCommand } from "@defs/ACommand";
+import { ACommand } from "@defs/ACommand";
 
-export default abstract class Command implements ApplicationCommand {
+export default abstract class Command implements ACommand {
     protected name: string;
     protected data: ApplicationCommandData;
 
