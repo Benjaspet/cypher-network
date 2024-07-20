@@ -14,5 +14,11 @@
     "emojis": {
         "success": 1,
         "error": 1
+    },
+    "database": {
+        "mongoUri": "mongodb://localhost:27017"
+    },
+    "web": {
+        "port": 3000
     }
 }
