@@ -12,7 +12,9 @@
         "types": ["bun-types"],
         "baseUrl": ".",
         "paths": {
-            "@app/*": ["src/*"],
+            "@app/*": ["src/*", "src/server/*"],
+
+            // Client (Discord bot) aliases.
             "@commands/*": ["src/commands/*"],
             "@constants/*": ["src/constants/*"],
             "@events/*": ["src/events/*"],
@@ -20,7 +22,10 @@
             "@managers/*": ["src/managers/*"],
             "@structs/*": ["src/structs/*"],
             "@defs/*": ["src/types/*"],
-            "@utils/*": ["src/utils/*"]
+            "@utils/*": ["src/utils/*"],
+
+            // Server (web API) aliases.
+            "@routes/*": ["src/server/routes/*"]
         }
     }
 }

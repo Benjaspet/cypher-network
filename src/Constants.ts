@@ -24,5 +24,6 @@ export default class Constants {
     public static DEFAULT_EMBED_COLOR = () =>
         Config.get("embedColor") as HexColorString;
     public static EMOJI_SUCCESS = () => Config.get("emojis").success;
-    public static EMOJI_ERROR = () => Config.get("emojis").error;
+    public static EMOJI_ERROR = () => Config.get("emojis").error
+    public static INVITE_URL = () => `https://discord.com/oauth2/authorize?client_id=${Config.get("clientId")}&permissions=274878187520&integration_type=0&scope=bot+applications.commands`;
 }

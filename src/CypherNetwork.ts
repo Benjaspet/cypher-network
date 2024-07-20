@@ -21,10 +21,13 @@ import EventManager from "@managers/EventManager";
 import Config from "@structs/Config";
 import Database from "@structs/Database";
 
+import WebServer from "@app/WebServer";
+
 import { ILogObj, Logger } from "tslog";
 
-await Config.parse();
-await Database.initialize();
+console.clear();
+
+/// <editor-fold defaultstate="collapsed" desc="Logger">
 
 const time: string = "[{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}]";
 export const logger: Logger<ILogObj> = new Logger({
@@ -49,6 +52,13 @@ export const logger: Logger<ILogObj> = new Logger({
         filePathWithLine: "magenta"
     }
 });
+
+/// </editor-fold>
+
+await Config.parse();
+await Database.initialize();
+
+WebServer.initialize();
 
 export const client: Client = new Client({
     partials: [Partials.Channel, Partials.GuildMember, Partials.Message],
