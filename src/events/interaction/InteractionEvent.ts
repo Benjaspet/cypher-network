@@ -15,13 +15,19 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import { Client, ClientEvents, GuildMember, Interaction } from "discord.js";
+import {
+    Client,
+    ClientEvents,
+    GuildMember,
+    Interaction
+} from "discord.js";
 
 import CommandManager from "@managers/CommandManager";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
 import { IEvent } from "@defs/IEvent";
+import { logger } from "@app/CypherNetwork";
 
 export default class InteractionEvent implements IEvent {
     public name: keyof ClientEvents;
@@ -34,23 +40,28 @@ export default class InteractionEvent implements IEvent {
         this.client = client;
     }
 
-    public async execute(interaction: Interaction): Promise<void> {
-        if (interaction.inGuild()) {
-            if (interaction.isCommand()) {
-                if (interaction.member instanceof GuildMember) {
-                    const name: string = interaction.commandName;
-                    const command = CommandManager.commands.get(name);
-                    if (command != undefined && interaction.isCommand()) {
-                        command.execute(interaction);
-                    }
+    public async execute(inter: Interaction): Promise<void> {
+        if (inter.inGuild() && inter.member instanceof GuildMember) {
+            if (inter.isCommand()) {
+                const name: string = inter.commandName;
+                const command = CommandManager.commands.get(name);
+                if (command != undefined) {
+                    command.execute(inter);
+                }
+            } else if (inter.isAutocomplete()) {
+                logger.info("Autocomplete event.");
+                const focusedName: string = inter.commandName;
+                const command = CommandManager.commands.get(focusedName);
+                if (command != undefined) {
+                    command.autocomplete(inter);
                 }
             }
         } else {
             const embed = EmbedUtil.getDefaultEmbed(
                 "Please run this command in a guild."
             );
-            if (interaction.isCommand() || interaction.isButton()) {
-                return void (await interaction.reply({ embeds: [embed] }));
+            if (inter.isCommand() || inter.isButton()) {
+                return void (await inter.reply({ embeds: [embed] }));
             } else return;
         }
     }
