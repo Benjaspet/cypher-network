@@ -1,6 +1,8 @@
-import { connect, Mongoose } from "mongoose";
 import Config from "@structs/Config";
+
 import { logger } from "@app/CypherNetwork";
+
+import { Mongoose, connect } from "mongoose";
 import * as process from "node:process";
 
 class Database {

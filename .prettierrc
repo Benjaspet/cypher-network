@@ -6,6 +6,7 @@
     "semi": true,
     "singleQuote": false,
     "tabWidth": 4,
+    "endOfLine": "lf",
     "trailingComma": "none",
     "useTabs": false,
     "plugins": ["@trivago/prettier-plugin-sort-imports"],
@@ -13,9 +14,12 @@
     "importOrderSortSpecifiers": true,
     "importOrder": [
         "bun",
+        "elysia",
         "discord.js",
         "discord-api-types",
         "^@discordjs/(.*)$",
+
+        "^@routes/(.*)$",
         "^@commands/(.*)$",
         "^@constants/(.*)$",
         "^@events/(.*)$",
@@ -25,6 +29,7 @@
         "^@utils/(.*)$",
         "^@defs/(.*)$",
         "^@app/(.*)$",
+
         "<THIRD_PARTY_MODULES>"
     ]
 }

@@ -1,8 +1,11 @@
 import Elysia from "elysia";
-import Config from "@structs/Config";
-import { logger } from "@app/CypherNetwork";
-import Constants from "@app/Constants";
+
 import skinPreview from "@routes/SkinPreview";
+
+import Config from "@structs/Config";
+
+import Constants from "@app/Constants";
+import { logger } from "@app/CypherNetwork";
 
 class WebServer {
     private readonly app: Elysia;
@@ -37,7 +40,9 @@ class WebServer {
      */
     private startServer() {
         this.app.listen(Config.get("web").port, (server) => {
-            logger.info(`🚀 Web server started on ${server?.hostname}:${server?.port}!`)
+            logger.info(
+                `🚀 Web server started on ${server?.hostname}:${server?.port}!`
+            );
         });
     }
 }

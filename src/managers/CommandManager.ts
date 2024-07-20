@@ -18,20 +18,22 @@
 import { ApplicationCommandData, Client, Collection } from "discord.js";
 
 import AccountCommand from "@commands/AccountCommand";
+import AgentCommand from "@commands/AgentCommand";
 import CompetitiveCommand from "@commands/CompetitiveCommand";
 import HistoryCommand from "@commands/HistoryCommand";
+import InfoCommand from "@commands/InfoCommand";
 import MatchCommand from "@commands/MatchCommand";
 import MostRecentCommand from "@commands/MostRecentCommand";
 
 import Command from "@structs/Command";
 
 import { ACommand } from "@defs/ACommand";
-import InfoCommand from "@commands/InfoCommand";
-import AgentCommand from "@commands/AgentCommand";
 
 export default class CommandManager {
-    public static commands: Collection<string, ACommand> =
-        new Collection<string, ACommand>();
+    public static commands: Collection<string, ACommand> = new Collection<
+        string,
+        ACommand
+    >();
 
     constructor(client: Client) {
         CommandManager.registerCommands([
@@ -49,8 +51,7 @@ export default class CommandManager {
      * Returns the application command data for all known commands.
      */
     public static getCommands(): ApplicationCommandData[] {
-        return CommandManager.commands
-            .map((cmd) => cmd.getCommandData());
+        return CommandManager.commands.map((cmd) => cmd.getCommandData());
     }
 
     private static registerCommands(commands: Command[]): void {

@@ -15,15 +15,9 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import {
-    Client,
-    CommandInteraction,
-    EmbedBuilder
-} from "discord.js";
+import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
-
-import CypherNetworkConstants from "@app/Constants";
 
 import Command from "@structs/Command";
 
@@ -31,13 +25,11 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ACommand } from "@defs/ACommand";
 
+import CypherNetworkConstants from "@app/Constants";
+
 import fetch from "node-fetch";
 
-
-export default class AgentCommand
-    extends Command
-    implements ACommand
-{
+export default class AgentCommand extends Command implements ACommand {
     private readonly client: Client;
 
     constructor(client: Client) {
@@ -164,8 +156,12 @@ export default class AgentCommand
             )
                 .then((response) => response.json())
                 .then(async (res) => {
-                    const {data} = res;
-                    const agent = data.find((agent: { displayName: string; }) => agent.displayName.toLowerCase() === agentName.toLowerCase());
+                    const { data } = res;
+                    const agent = data.find(
+                        (agent: { displayName: string }) =>
+                            agent.displayName.toLowerCase() ===
+                            agentName.toLowerCase()
+                    );
                     const embed = new EmbedBuilder()
                         .setAuthor({
                             name: agent.displayName,
@@ -180,9 +176,12 @@ export default class AgentCommand
                             },
                             {
                                 name: "Abilities",
-                                value: agent.abilities.map((ability: any) =>
-                                    `• ${ability.displayName}`
-                                ).join("\n")
+                                value: agent.abilities
+                                    .map(
+                                        (ability: any) =>
+                                            `• ${ability.displayName}`
+                                    )
+                                    .join("\n")
                             }
                         ])
                         .setFooter({

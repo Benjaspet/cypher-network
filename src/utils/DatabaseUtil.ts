@@ -1,4 +1,5 @@
 import { User } from "discord.js";
+
 import CypherUser, { ICypherUser } from "@defs/CypherUser";
 
 class DatabaseUtil {
