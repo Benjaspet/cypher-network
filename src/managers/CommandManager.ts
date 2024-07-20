@@ -1,7 +1,5 @@
 /*
- * Copyright © 2023 Ben Petrillo. All rights reserved.
- *
- * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
+ * Copyright © 2024 Ben Petrillo, Kobe Do, Tridip Paul.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
@@ -12,10 +10,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * All portions of this software are available for public use, provided that
- * credit is given to the original author(s).
+ * All portions of this software are available for public use,
+ * provided that credit is given to the original author(s).
  */
-import { ApplicationCommandData, Client, Collection } from "discord.js";
+import { Client, Collection } from "discord.js";
 
 import AccountCommand from "@commands/AccountCommand";
 import AgentCommand from "@commands/AgentCommand";
@@ -25,14 +23,15 @@ import InfoCommand from "@commands/InfoCommand";
 import MatchCommand from "@commands/MatchCommand";
 import MostRecentCommand from "@commands/MostRecentCommand";
 
-import Command from "@structs/Command";
+import ACommand from "@structs/ACommand";
 
-import { ACommand } from "@defs/ACommand";
+import { ICommand } from "@defs/ICommand";
+import SkinCommand from "@commands/SkinCommand";
 
 export default class CommandManager {
-    public static commands: Collection<string, ACommand> = new Collection<
+    public static commands: Collection<string, ICommand> = new Collection<
         string,
-        ACommand
+        ICommand
     >();
 
     constructor(client: Client) {
@@ -43,18 +42,19 @@ export default class CommandManager {
             new MatchCommand(client),
             new MostRecentCommand(client),
             new InfoCommand(client),
-            new AgentCommand(client)
+            new AgentCommand(client),
+            new SkinCommand(client)
         ]);
     }
 
     /**
      * Returns the application command data for all known commands.
      */
-    public static getCommands(): ApplicationCommandData[] {
+    public static getCommands() {
         return CommandManager.commands.map((cmd) => cmd.getCommandData());
     }
 
-    private static registerCommands(commands: Command[]): void {
+    private static registerCommands(commands: ACommand[]): void {
         for (const command of commands) {
             CommandManager.commands.set(command.getName(), command);
         }

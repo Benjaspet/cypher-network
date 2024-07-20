@@ -14,6 +14,7 @@ class Database {
     public static async initialize(): Promise<void> {
         try {
             Database.instance = await connect(Config.get("database").mongoUri);
+            logger.info("🚀 MongoDB database connected: " + Config.get("database").mongoUri);
         } catch (error: any) {
             logger.error("Unable to connect to the database.", error);
             process.exit(1);

@@ -12,6 +12,8 @@
     },
     "dependencies": {
         "@discordjs/rest": "^0.1.0-canary.0",
+        "@ffmpeg-installer/ffmpeg": "^1.1.0",
+        "axios": "^1.7.2",
         "discord-api-types": "^0.37.92",
         "discord.js": "^14.15.3",
         "elysia": "^1.1.3",

@@ -1,10 +1,31 @@
-import { Client, CommandInteraction, version } from "discord.js";
+/*
+ * Copyright © 2024 Ben Petrillo, Kobe Do, Tridip Paul.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * All portions of this software are available for public use,
+ * provided that credit is given to the original author(s).
+ */
 
-import Command from "@structs/Command";
+import {
+    Client,
+    CommandInteraction,
+    SlashCommandBuilder,
+    version,
+} from "discord.js";
+
+import ACommand from "@structs/ACommand";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
-import { ACommand } from "@defs/ACommand";
+import { ICommand } from "@defs/ICommand";
 
 import messages from "@app/messages.json";
 
@@ -15,12 +36,14 @@ function random() {
     return messages[Math.floor(Math.random() * messages.length)];
 }
 
-class InfoCommand extends Command implements ACommand {
+class InfoCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
-        super({
-            name: "info",
-            description: "Display basic bot information."
-        });
+        super(
+            new SlashCommandBuilder()
+                .setName("info")
+                .setDescription("Get information about the bot.")
+                .toJSON(),
+        );
     }
 
     public async execute(event: CommandInteraction): Promise<void> {
@@ -29,14 +52,9 @@ class InfoCommand extends Command implements ACommand {
         // Pre-fetch all information needed for the embed.
         const serverCount = this.client.guilds.cache.size;
 
-        let userCount = 0;
-        for (const [_id, guild] of this.client.guilds.cache) {
-            userCount += guild.memberCount ?? 0;
-        }
-
         const embed = EmbedUtil.getEmbed(this.client)
             .setAuthor({
-                name: "Watching where you are..."
+                name: "Watching where you are...",
             })
             .setDescription(`"*${random()}*"`)
             .addFields([
@@ -45,15 +63,14 @@ class InfoCommand extends Command implements ACommand {
                     value:
                         `• Powered by DJS ${version}\n` +
                         `• Developed by: Ponjo Studios\n` +
-                        `• Server count: ${serverCount}\n` +
-                        `• User count: ${userCount}`
+                        `• Server count: ${serverCount}\n`,
                 },
                 {
                     name: "Links",
                     value:
                         "• [Terms of Service](https://docs.benpetrillo.dev/cypher-network/tos.html)\n" +
-                        "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)"
-                }
+                        "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)",
+                },
             ])
             .toJSON();
 

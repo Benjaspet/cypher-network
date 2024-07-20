@@ -1,7 +1,5 @@
 /*
- * Copyright © 2023 Ben Petrillo. All rights reserved.
- *
- * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
+ * Copyright © 2024 Ben Petrillo, Kobe Do, Tridip Paul.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
@@ -12,103 +10,85 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * All portions of this software are available for public use, provided that
- * credit is given to the original author(s).
+ * All portions of this software are available for public use,
+ * provided that credit is given to the original author(s).
  */
-import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 
-import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import {
+    Client,
+    CommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+} from "discord.js";
 
-import Command from "@structs/Command";
+import ACommand from "@structs/ACommand";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
-import { ACommand } from "@defs/ACommand";
+import { ICommand } from "@defs/ICommand";
 
 import CypherNetworkConstants from "@app/Constants";
 
 import fetch from "node-fetch";
 
-export default class CompetitiveCommand extends Command implements ACommand {
-    private readonly client: Client;
-
-    constructor(client: Client) {
-        super({
-            name: "competitive",
-            description: "Fetch recent competitive match data for VALORANT.",
-            options: [
-                {
-                    name: "name",
-                    description: "The player's name.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "tag",
-                    description: "The player's tag.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "region",
-                    description: "The region of this player.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    choices: [
-                        {
-                            name: "North America",
-                            value: "na"
-                        },
-                        {
-                            name: "Europe",
-                            value: "eu"
-                        },
-                        {
-                            name: "Korea",
-                            value: "kr"
-                        },
-                        {
-                            name: "Brazil",
-                            value: "br"
-                        },
-                        {
-                            name: "Latin America",
-                            value: "latam"
-                        },
-                        {
-                            name: "Asia-Pacific",
-                            value: "ap"
-                        }
-                    ]
-                }
-            ]
-        });
-        this.client = client;
+export default class CompetitiveCommand extends ACommand implements ICommand {
+    constructor(private readonly client: Client) {
+        super(
+            new SlashCommandBuilder()
+                .setName("competitive")
+                .setDescription("Fetch a player's recent competitive matches.")
+                .addStringOption((option) =>
+                    option
+                        .setName("name")
+                        .setDescription("The player's name.")
+                        .setRequired(true),
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName("tag")
+                        .setDescription("The player's tag.")
+                        .setRequired(true),
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName("region")
+                        .setDescription("The player's region.")
+                        .setRequired(true)
+                        .addChoices(
+                            { name: "North America", value: "na" },
+                            { name: "Europe", value: "eu" },
+                            { name: "Korea", value: "kr" },
+                            { name: "Brazil", value: "br" },
+                            { name: "Latin America", value: "latam" },
+                            { name: "Asia-Pacific", value: "ap" },
+                        ),
+                )
+                .toJSON(),
+        );
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
         if (!interaction.isChatInputCommand()) return;
 
         const name: string = encodeURIComponent(
-            interaction.options.getString("name")!
+            interaction.options.getString("name")!,
         );
         const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")!
+            interaction.options.getString("tag")!,
         );
         const region: string = encodeURIComponent(
-            interaction.options.getString("region")!
+            interaction.options.getString("region")!,
         );
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v1/mmr-history/${region}/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
+                `https://api.henrikdev.xyz/valorant/v1/mmr-history/${region}/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`,
             )
                 .then((response) => response.json())
                 .then(async (res) => {
                     const { data } = res;
                     const preparedFieldData = [];
-                    const toAccess: any[] =
-                        data.length > 10 ? data.slice(0, 10) : data;
+                    const toAccess: any[] = data.length > 10 ? data.slice(0, 10) : data;
                     for (const match of toAccess) {
                         preparedFieldData.push({
                             name: `Map: ${match.map.name}`,
@@ -123,29 +103,29 @@ export default class CompetitiveCommand extends Command implements ACommand {
                                 `\n` +
                                 `• Match Date: **${match.date}**` +
                                 `\n` +
-                                `• Match ID: **${match.match_id}**`
+                                `• Match ID: **${match.match_id}**`,
                         });
                     }
                     const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Competitive: ${decodeURIComponent(name)}#${tag}`,
-                            iconURL: data[0].images.small
+                            iconURL: data[0].images.small,
                         })
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .addFields(preparedFieldData)
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user?.displayAvatarURL()
+                            iconURL: this.client.user?.displayAvatarURL(),
                         })
                         .setTimestamp()
                         .toJSON();
                     return void (await interaction.editReply({
-                        embeds: [embed]
+                        embeds: [embed],
                     }));
                 });
         } catch (e) {
             const embed = EmbedUtil.getErrorEmbed(
-                "An error occurred while fetching competitive data."
+                "An error occurred while fetching competitive data.",
             );
             return void (await interaction.editReply({ embeds: [embed] }));
         }

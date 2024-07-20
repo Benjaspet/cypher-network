@@ -1,7 +1,5 @@
 /*
- * Copyright © 2023 Ben Petrillo. All rights reserved.
- *
- * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
+ * Copyright © 2024 Ben Petrillo, Kobe Do, Tridip Paul.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
@@ -12,78 +10,61 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * All portions of this software are available for public use, provided that
- * credit is given to the original author(s).
+ * All portions of this software are available for public use,
+ * provided that credit is given to the original author(s).
  */
-import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 
-import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import {
+    Client,
+    CommandInteraction,
+    EmbedBuilder,
+    SlashCommandBuilder,
+} from "discord.js";
 
-import Command from "@structs/Command";
+import ACommand from "@structs/ACommand";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
-import { ACommand } from "@defs/ACommand";
+import { ICommand } from "@defs/ICommand";
 
 import CypherNetworkConstants from "@app/Constants";
 
 import fetch from "node-fetch";
 
-export default class MostRecentCommand extends Command implements ACommand {
-    private readonly client: Client;
-
-    constructor(client: Client) {
-        super({
-            name: "mostrecent",
-            description: "Fetch the provided player's most recent match data.",
-            options: [
-                {
-                    name: "name",
-                    description: "The player's name.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "tag",
-                    description: "The player's tag.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "region",
-                    description: "The region of this player.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    choices: [
-                        {
-                            name: "North America",
-                            value: "na"
-                        },
-                        {
-                            name: "Europe",
-                            value: "eu"
-                        },
-                        {
-                            name: "Korea",
-                            value: "kr"
-                        },
-                        {
-                            name: "Brazil",
-                            value: "br"
-                        },
-                        {
-                            name: "Latin America",
-                            value: "latam"
-                        },
-                        {
-                            name: "Asia-Pacific",
-                            value: "ap"
-                        }
-                    ]
-                }
-            ]
-        });
-        this.client = client;
+export default class MostRecentCommand extends ACommand implements ICommand {
+    constructor(private readonly client: Client) {
+        super(
+            new SlashCommandBuilder()
+                .setName("mostrecent")
+                .setDescription("Fetch a player's most recent match data.")
+                .addStringOption((option) =>
+                    option
+                        .setName("name")
+                        .setDescription("The player's name.")
+                        .setRequired(true),
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName("tag")
+                        .setDescription("The player's tag.")
+                        .setRequired(true),
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName("region")
+                        .setDescription("The player's region.")
+                        .setRequired(true)
+                        .addChoices(
+                            { name: "North America", value: "na" },
+                            { name: "Europe", value: "eu" },
+                            { name: "Korea", value: "kr" },
+                            { name: "Brazil", value: "br" },
+                            { name: "Latin America", value: "latam" },
+                            { name: "Asia-Pacific", value: "ap" },
+                        ),
+                )
+                .toJSON(),
+        );
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
@@ -95,7 +76,7 @@ export default class MostRecentCommand extends Command implements ACommand {
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${name}/${tag}?size=1&api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
+                `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${name}/${tag}?size=1&api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`,
             )
                 .then((response) => response.json())
                 .then(async (res) => {
@@ -103,8 +84,7 @@ export default class MostRecentCommand extends Command implements ACommand {
                     const match = data[0];
                     const map: string = match.meta.map.name;
                     const mode: string = match.meta.mode;
-                    const season: string =
-                        match.meta.season.short.toUpperCase();
+                    const season: string = match.meta.season.short.toUpperCase();
                     const cluster: string = match.meta.cluster;
                     const playerTeam: string = match.stats.team;
                     const level: number = match.stats.level;
@@ -124,24 +104,24 @@ export default class MostRecentCommand extends Command implements ACommand {
                     const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Recent Match: ${decodeURIComponent(name)}#${tag}`,
-                            iconURL: characterIcon
+                            iconURL: characterIcon,
                         })
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(
                             `• Mode: **${mode}**` +
-                                `\n` +
-                                `• Map: **${map}**` +
-                                `\n` +
-                                `• Season: **${season}**` +
-                                `\n` +
-                                `• Cluster: **${cluster}**` +
-                                `\n` +
-                                `• Team: **${playerTeam}**` +
-                                `\n` +
-                                `• Level: **${level}**` +
-                                `\n` +
-                                `• Character: **${character}**` +
-                                `\n`
+                            `\n` +
+                            `• Map: **${map}**` +
+                            `\n` +
+                            `• Season: **${season}**` +
+                            `\n` +
+                            `• Cluster: **${cluster}**` +
+                            `\n` +
+                            `• Team: **${playerTeam}**` +
+                            `\n` +
+                            `• Level: **${level}**` +
+                            `\n` +
+                            `• Character: **${character}**` +
+                            `\n`,
                         )
                         .addFields([
                             {
@@ -163,28 +143,28 @@ export default class MostRecentCommand extends Command implements ACommand {
                                     `\n` +
                                     `• Damage Given: **${damageGiven}**` +
                                     `\n` +
-                                    `• Damage Received: **${damageReceived}**`
+                                    `• Damage Received: **${damageReceived}**`,
                             },
                             {
                                 name: "Final Score",
                                 value:
                                     `• Red Team: **${redScore}**` +
                                     `\n` +
-                                    `• Blue Team: **${blueScore}**`
-                            }
+                                    `• Blue Team: **${blueScore}**`,
+                            },
                         ])
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user?.displayAvatarURL()
+                            iconURL: this.client.user?.displayAvatarURL(),
                         })
                         .setTimestamp();
                     return void (await interaction.editReply({
-                        embeds: [embed]
+                        embeds: [embed],
                     }));
                 });
         } catch (e) {
             const embed = EmbedUtil.getErrorEmbed(
-                "An error occurred while fetching competitive data."
+                "An error occurred while fetching competitive data.",
             );
             return void (await interaction.editReply({ embeds: [embed] }));
         }

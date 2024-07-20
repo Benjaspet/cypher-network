@@ -27,6 +27,6 @@ export default class ApplicationManager {
 
     public async login(): Promise<void> {
         await this.client.login(CypherNetworkConstants.TOKEN);
-        logger.info("Logged in | Client ID: " + this.client.user?.id);
+        logger.info("🚀 Logged in to client: " + this.client.user?.id);
     }
 }
