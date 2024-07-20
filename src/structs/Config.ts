@@ -38,6 +38,12 @@ type JsonConfig = {
         success: string;
         error: string;
     };
+    database: {
+        mongoUri: string;
+    };
+    web: {
+        port: number;
+    };
 };
 
 const defaultConfig = {
@@ -56,6 +62,12 @@ const defaultConfig = {
     emojis: {
         success: "0",
         error: "0"
+    },
+    database: {
+        mongoUri: "mongodb://localhost:27017"
+    },
+    web: {
+        port: 3000
     }
 } satisfies JsonConfig;
 
@@ -112,7 +124,7 @@ export default class Config {
      * @param key The key to fetch.
      */
     public static get<K extends keyof JsonConfig>(key: K): JsonConfig[K] {
-        return Config.instance[key];
+        return Config.instance[key] ?? defaultConfig[key];
     }
 
     /**

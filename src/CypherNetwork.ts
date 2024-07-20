@@ -19,10 +19,12 @@ import ApplicationManager from "@managers/ApplicationManager";
 import EventManager from "@managers/EventManager";
 
 import Config from "@structs/Config";
+import Database from "@structs/Database";
 
 import { ILogObj, Logger } from "tslog";
 
 await Config.parse();
+await Database.initialize();
 
 const time: string = "[{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}]";
 export const logger: Logger<ILogObj> = new Logger({
