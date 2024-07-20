@@ -25,8 +25,6 @@ import WebServer from "@app/WebServer";
 
 import { ILogObj, Logger } from "tslog";
 
-console.clear();
-
 /// <editor-fold defaultstate="collapsed" desc="Logger">
 
 const time: string = "[{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}]";
