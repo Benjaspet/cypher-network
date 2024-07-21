@@ -40,6 +40,12 @@ export default class EventManager {
                         "interactionCreate",
                         false
                     ).execute(interaction);
+                } else if (interaction.isAutocomplete()) {
+                    await new InteractionEvent(
+                        this.client,
+                        "interactionCreate",
+                        false
+                    ).execute(interaction);
                 }
             });
     }

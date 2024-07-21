@@ -42,6 +42,8 @@ type JsonConfig = {
         mongoUri: string;
     };
     web: {
+        host: string,
+        deployed: boolean;
         port: number;
     };
 };
@@ -67,6 +69,8 @@ const defaultConfig = {
         mongoUri: "mongodb://localhost:27017"
     },
     web: {
+        host: "http://localhost",
+        deployed: false,
         port: 3000
     }
 } satisfies JsonConfig;
