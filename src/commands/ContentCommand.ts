@@ -13,20 +13,15 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
-import {
-    AutocompleteInteraction,
-    Client, ColorResolvable,
-    CommandInteraction, EmbedBuilder,
-    SlashCommandBuilder
-} from "discord.js";
+import {AutocompleteInteraction, Client, CommandInteraction, SlashCommandBuilder} from "discord.js";
 
 import ACommand from "@structs/ACommand";
+
+import EmbedUtil from "@utils/EmbedUtil";
 
 import { ICommand } from "@defs/ICommand";
 
 import fetch from "node-fetch";
-import Config from "@structs/Config";
 
 export default class ContentCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
@@ -46,7 +41,7 @@ export default class ContentCommand extends ACommand implements ICommand {
                 .addStringOption(
                     (option) =>
                         option
-                            .setName("card")
+                            .setName("cards")
                             .setDescription("Gets the cards from VALORANT")
                             .setAutocomplete(true)
                 )
@@ -56,9 +51,8 @@ export default class ContentCommand extends ACommand implements ICommand {
 
     public async execute(interaction: CommandInteraction): Promise<void> {
         if (!interaction.isChatInputCommand()) return;
-
         const buddy: string = interaction.options.getString("buddy")!;
-        const card: string = interaction.options.getString("card")!;
+        const card: string = interaction.options.getString("cards")!;
 
         if (buddy) {
             await fetch(`https://valorant-api.com/v1/buddies`)
@@ -70,10 +64,10 @@ export default class ContentCommand extends ACommand implements ICommand {
                     );
                     const buddyImage = found.displayIcon;
 
-                    const embed = new EmbedBuilder()
-                        .setColor(Config.get("embedColor") as ColorResolvable)
+                    const embed = EmbedUtil.getEmbed(this.client)
+                        .setTitle(`${buddy}`)
                         .setImage(buddyImage)
-                        .setFooter({ text: buddy, iconURL: buddyImage})
+                        .toJSON();
 
                     await interaction.reply({ embeds: [embed] });
                 });
@@ -85,11 +79,10 @@ export default class ContentCommand extends ACommand implements ICommand {
                         (found: { displayName: string }) =>
                             found.displayName === card
                     );
-
-                    const embed = new EmbedBuilder()
-                        .setColor(Config.get("embedColor") as ColorResolvable)
-                        .setAuthor({ name: card, iconURL: found.displayIcon })
-                        .setImage(found.wideArt)
+                    const cardImage = found.displayIcon;
+                    const embed = EmbedUtil.getEmbed(this.client)
+                        .setTitle(`Player Card: ${card}`)
+                        .setImage(cardImage)
                         .toJSON();
 
                     await interaction.reply({ embeds: [embed] });
@@ -110,70 +103,39 @@ export default class ContentCommand extends ACommand implements ICommand {
     }
 
     public async autocomplete(inter: AutocompleteInteraction): Promise<void> {
-        if (!inter.isAutocomplete()) return;
-        const option = inter.options.getFocused().toLowerCase();
-        const focused = inter.options.getFocused(true).name;
-        switch (focused) {
-            case "buddy":
-                try {
-                    fetch(`https://valorant-api.com/v1/buddies`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const buddies = data.data;
-                            const filtered = buddies.filter(
-                                (buddy: { displayName: string }) =>
-                                    buddy.displayName.toLowerCase().startsWith(option)
-                            );
-                            if (filtered.length === 0) {
-                                return void inter.respond([
-                                    { name: "No buddies found.", value: "a" }
-                                ]);
-                            }
-                            const options = this.reduceTo25Elements(filtered).map(
-                                (buddy: { displayName: string }) => ({
-                                    name: buddy.displayName,
-                                    value: buddy.displayName
-                                })
-                            );
-                            return void inter.respond(options);
-                        });
-                } catch (e) {
-                    console.log(e);
-                    return void inter.respond([
-                        { name: "An error occurred.", value: "a" }
-                    ]);
-                }
-                break;
-            case "card":
-                try {
-                    fetch(`https://valorant-api.com/v1/playercards`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const cards = this.shuffle(this.reduceTo25Elements(data.data));
-                            const filtered = cards.filter(
-                                (card: { displayName: string }) =>
-                                    card.displayName.toLowerCase().startsWith(option)
-                            );
-                            if (filtered.length === 0) {
-                                return void inter.respond([
-                                    { name: "No cards found.", value: "a" }
-                                ]);
-                            }
-                            const options = this.reduceTo25Elements(filtered).map(
-                                (card: { displayName: string }) => ({
-                                    name: card.displayName,
-                                    value: card.displayName
-                                })
-                            );
-                            return void inter.respond(options);
-                        });
-                } catch (e) {
-                    console.log(e);
-                    return void inter.respond([
-                        { name: "An error occurred.", value: "a" }
-                    ]);
-                }
-                break;
+        if(!inter.isAutocomplete()) return;
+        const focused: string = inter.options.getFocused().toLowerCase();
+        const commandFocus: string = inter.options.getFocused(true).name;
+        try {
+            let apiFocus: string = "";
+            switch (commandFocus) {
+                case "buddy":
+                    apiFocus = "buddies";
+                    break;
+                case "cards":
+                    apiFocus = "playercards";
+                    break;
+            }
+            await fetch(`https://valorant-api.com/v1/${apiFocus}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    const items: Types[] = this.shuffle(data.data);
+                    const filtered = items.filter(
+                        (item: Types) => item.displayName.toLowerCase().startsWith(focused)
+                    );
+                    const options = this.reduceTo25Elements(filtered).map(
+                        (item: Types) => ({
+                            name: item.displayName,
+                            value: item.displayName
+                        })
+                    );
+                    return void inter.respond(options);
+                });
+        } catch (e) {
+            console.log(e);
+            return void inter.respond([
+                { name: "An error occurred.", value: "a" }
+            ]);
         }
     }
 }
