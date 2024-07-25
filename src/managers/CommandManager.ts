@@ -18,16 +18,16 @@ import { Client, Collection } from "discord.js";
 import AccountCommand from "@commands/AccountCommand";
 import AgentCommand from "@commands/AgentCommand";
 import CompetitiveCommand from "@commands/CompetitiveCommand";
+import ContentCommand from "@commands/ContentCommand";
 import HistoryCommand from "@commands/HistoryCommand";
 import InfoCommand from "@commands/InfoCommand";
 import MatchCommand from "@commands/MatchCommand";
 import MostRecentCommand from "@commands/MostRecentCommand";
+import SkinCommand from "@commands/SkinCommand";
 
 import ACommand from "@structs/ACommand";
 
 import { ICommand } from "@defs/ICommand";
-import SkinCommand from "@commands/SkinCommand";
-import ContentCommand from "@commands/ContentCommand";
 
 export default class CommandManager {
     public static commands: Collection<string, ICommand> = new Collection<

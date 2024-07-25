@@ -13,12 +13,11 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import {
     Client,
     CommandInteraction,
     EmbedBuilder,
-    SlashCommandBuilder,
+    SlashCommandBuilder
 } from "discord.js";
 
 import ACommand from "@structs/ACommand";
@@ -41,7 +40,7 @@ export default class MatchCommand extends ACommand implements ICommand {
                     option
                         .setName("id")
                         .setDescription("The match ID.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .toJSON()
         );
@@ -54,7 +53,7 @@ export default class MatchCommand extends ACommand implements ICommand {
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v2/match/${matchId}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`,
+                `https://api.henrikdev.xyz/valorant/v2/match/${matchId}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
             )
                 .then((response) => response.json())
                 .then(async (res) => {
@@ -81,47 +80,50 @@ export default class MatchCommand extends ACommand implements ICommand {
                                 `• Large Card: [**click here!**](${player.assets.card.large})` +
                                 `\n` +
                                 `• Agent Image: [**click here!**](${player.assets.agent.small})` +
-                                `\n`,
+                                `\n`
                         });
                     }
                     const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Match Data: ${data.metadata.mode} [${data.metadata.region.toUpperCase()}]`,
-                            iconURL: data.players.all_players[0].assets.agent.small,
+                            iconURL:
+                                data.players.all_players[0].assets.agent.small
                         })
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(
                             `• Map: **${data.metadata.map}**` +
-                            `\n` +
-                            `• Duration: **${Math.floor(data.metadata.game_length / 60)} minutes**` +
-                            `\n` +
-                            `• Rounds Played: **${data.metadata.rounds_played}**` +
-                            `\n` +
-                            `• Mode: **${data.metadata.mode}**` +
-                            `\n` +
-                            `• Queue Type: **${data.metadata.queue}**` +
-                            `\n` +
-                            `• Region: **${data.metadata.region.toUpperCase()}**` +
-                            `\n` +
-                            `• Region Cluster: **${data.metadata.cluster}**`,
+                                `\n` +
+                                `• Duration: **${Math.floor(data.metadata.game_length / 60)} minutes**` +
+                                `\n` +
+                                `• Rounds Played: **${data.metadata.rounds_played}**` +
+                                `\n` +
+                                `• Mode: **${data.metadata.mode}**` +
+                                `\n` +
+                                `• Queue Type: **${data.metadata.queue}**` +
+                                `\n` +
+                                `• Region: **${data.metadata.region.toUpperCase()}**` +
+                                `\n` +
+                                `• Region Cluster: **${data.metadata.cluster}**`
                         )
 
                         .addFields(preparedFieldData)
-                        .setThumbnail(data.players.all_players[0].assets.card.small)
+                        .setThumbnail(
+                            data.players.all_players[0].assets.card.small
+                        )
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user?.displayAvatarURL(),
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
                         .setTimestamp()
                         .toJSON();
                     return void (await interaction.editReply({
-                        embeds: [embed],
+                        embeds: [embed]
                     }));
                 });
         } catch (e) {
             console.log(e);
             const embed = EmbedUtil.getErrorEmbed(
-                "An error occurred while match competitive data.",
+                "An error occurred while match competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));
         }

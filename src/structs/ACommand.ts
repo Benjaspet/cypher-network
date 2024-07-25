@@ -16,17 +16,19 @@
  * credit is given to the original author(s).
  */
 import {
-    AutocompleteInteraction, ChatInputCommandInteraction,
+    AutocompleteInteraction,
+    ChatInputCommandInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody
 } from "discord.js";
 
 import { ICommand } from "@defs/ICommand";
+
 import { logger } from "@app/CypherNetwork";
 
-export type InteractionCommandData = RESTPostAPIChatInputApplicationCommandsJSONBody;
+export type InteractionCommandData =
+    RESTPostAPIChatInputApplicationCommandsJSONBody;
 
 export default abstract class ACommand implements ICommand {
-
     protected constructor(protected readonly data: InteractionCommandData) {}
 
     /**

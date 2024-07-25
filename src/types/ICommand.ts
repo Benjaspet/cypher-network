@@ -15,7 +15,6 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-
 import {
     AutocompleteInteraction,
     CommandInteraction,

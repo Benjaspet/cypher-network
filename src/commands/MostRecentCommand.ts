@@ -13,12 +13,11 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import {
     Client,
     CommandInteraction,
     EmbedBuilder,
-    SlashCommandBuilder,
+    SlashCommandBuilder
 } from "discord.js";
 
 import ACommand from "@structs/ACommand";
@@ -41,13 +40,13 @@ export default class MostRecentCommand extends ACommand implements ICommand {
                     option
                         .setName("name")
                         .setDescription("The player's name.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
                         .setName("tag")
                         .setDescription("The player's tag.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
@@ -60,10 +59,10 @@ export default class MostRecentCommand extends ACommand implements ICommand {
                             { name: "Korea", value: "kr" },
                             { name: "Brazil", value: "br" },
                             { name: "Latin America", value: "latam" },
-                            { name: "Asia-Pacific", value: "ap" },
-                        ),
+                            { name: "Asia-Pacific", value: "ap" }
+                        )
                 )
-                .toJSON(),
+                .toJSON()
         );
     }
 
@@ -76,7 +75,7 @@ export default class MostRecentCommand extends ACommand implements ICommand {
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${name}/${tag}?size=1&api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`,
+                `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${name}/${tag}?size=1&api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
             )
                 .then((response) => response.json())
                 .then(async (res) => {
@@ -84,7 +83,8 @@ export default class MostRecentCommand extends ACommand implements ICommand {
                     const match = data[0];
                     const map: string = match.meta.map.name;
                     const mode: string = match.meta.mode;
-                    const season: string = match.meta.season.short.toUpperCase();
+                    const season: string =
+                        match.meta.season.short.toUpperCase();
                     const cluster: string = match.meta.cluster;
                     const playerTeam: string = match.stats.team;
                     const level: number = match.stats.level;
@@ -104,24 +104,24 @@ export default class MostRecentCommand extends ACommand implements ICommand {
                     const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `Recent Match: ${decodeURIComponent(name)}#${tag}`,
-                            iconURL: characterIcon,
+                            iconURL: characterIcon
                         })
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(
                             `• Mode: **${mode}**` +
-                            `\n` +
-                            `• Map: **${map}**` +
-                            `\n` +
-                            `• Season: **${season}**` +
-                            `\n` +
-                            `• Cluster: **${cluster}**` +
-                            `\n` +
-                            `• Team: **${playerTeam}**` +
-                            `\n` +
-                            `• Level: **${level}**` +
-                            `\n` +
-                            `• Character: **${character}**` +
-                            `\n`,
+                                `\n` +
+                                `• Map: **${map}**` +
+                                `\n` +
+                                `• Season: **${season}**` +
+                                `\n` +
+                                `• Cluster: **${cluster}**` +
+                                `\n` +
+                                `• Team: **${playerTeam}**` +
+                                `\n` +
+                                `• Level: **${level}**` +
+                                `\n` +
+                                `• Character: **${character}**` +
+                                `\n`
                         )
                         .addFields([
                             {
@@ -143,28 +143,28 @@ export default class MostRecentCommand extends ACommand implements ICommand {
                                     `\n` +
                                     `• Damage Given: **${damageGiven}**` +
                                     `\n` +
-                                    `• Damage Received: **${damageReceived}**`,
+                                    `• Damage Received: **${damageReceived}**`
                             },
                             {
                                 name: "Final Score",
                                 value:
                                     `• Red Team: **${redScore}**` +
                                     `\n` +
-                                    `• Blue Team: **${blueScore}**`,
-                            },
+                                    `• Blue Team: **${blueScore}**`
+                            }
                         ])
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user?.displayAvatarURL(),
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
                         .setTimestamp();
                     return void (await interaction.editReply({
-                        embeds: [embed],
+                        embeds: [embed]
                     }));
                 });
         } catch (e) {
             const embed = EmbedUtil.getErrorEmbed(
-                "An error occurred while fetching competitive data.",
+                "An error occurred while fetching competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));
         }

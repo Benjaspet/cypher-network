@@ -13,12 +13,11 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import {
     Client,
     CommandInteraction,
     EmbedBuilder,
-    SlashCommandBuilder,
+    SlashCommandBuilder
 } from "discord.js";
 
 import ACommand from "@structs/ACommand";
@@ -41,21 +40,21 @@ export default class AccountCommand extends ACommand implements ICommand {
                     option
                         .setName("name")
                         .setDescription("The user's name'.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
                         .setName("tag")
                         .setDescription("The user's tag.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addBooleanOption((option) =>
                     option
                         .setName("card")
                         .setDescription("Display only the user's card data.")
-                        .setRequired(false),
+                        .setRequired(false)
                 )
-                .toJSON(),
+                .toJSON()
         );
     }
 
@@ -63,17 +62,17 @@ export default class AccountCommand extends ACommand implements ICommand {
         if (!interaction.isChatInputCommand()) return;
 
         const name: string = encodeURIComponent(
-            interaction.options.getString("name")!,
+            interaction.options.getString("name")!
         );
         const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")!,
+            interaction.options.getString("tag")!
         );
 
         const card: boolean = interaction.options.getBoolean("card") || false;
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v1/account/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`,
+                `https://api.henrikdev.xyz/valorant/v1/account/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
             )
                 .then((response) => response.json())
                 .then(async (res) => {
@@ -89,57 +88,59 @@ export default class AccountCommand extends ACommand implements ICommand {
                         const embed = new EmbedBuilder()
                             .setAuthor({
                                 name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
-                                iconURL: smallCard,
+                                iconURL: smallCard
                             })
-                            .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
+                            .setColor(
+                                CypherNetworkConstants.DEFAULT_EMBED_COLOR()
+                            )
                             .setImage(wideCard)
                             .setThumbnail(largeCard)
                             .setDescription(
                                 `• Small Card Link: [click here!](${smallCard})` +
-                                `\n` +
-                                `• Large Card Link: [click here!](${largeCard})` +
-                                `\n` +
-                                `• Wide Card Link: [click here!](${wideCard})`,
+                                    `\n` +
+                                    `• Large Card Link: [click here!](${largeCard})` +
+                                    `\n` +
+                                    `• Wide Card Link: [click here!](${wideCard})`
                             )
                             .setFooter({
                                 text: "Cypher Network",
-                                iconURL: this.client.user?.displayAvatarURL(),
+                                iconURL: this.client.user?.displayAvatarURL()
                             })
                             .setTimestamp()
                             .toJSON();
                         return void (await interaction.editReply({
-                            embeds: [embed],
+                            embeds: [embed]
                         }));
                     }
                     const embed = new EmbedBuilder()
                         .setAuthor({
                             name: `${data.name}#${data.tag} [Level ${accountLevel}]`,
-                            iconURL: smallCard,
+                            iconURL: smallCard
                         })
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setImage(wideCard)
                         .setDescription(
                             `• Region: **${region}**` +
-                            `\n` +
-                            `• Account Level: **${accountLevel}**` +
-                            `\n` +
-                            `• PUUID: **${puuid}**` +
-                            `\n` +
-                            `• Card ID: **${cardId}**`,
+                                `\n` +
+                                `• Account Level: **${accountLevel}**` +
+                                `\n` +
+                                `• PUUID: **${puuid}**` +
+                                `\n` +
+                                `• Card ID: **${cardId}**`
                         )
                         .setFooter({
                             text: "Cypher Network",
-                            iconURL: this.client.user?.displayAvatarURL(),
+                            iconURL: this.client.user?.displayAvatarURL()
                         })
                         .setTimestamp();
                     return void (await interaction.editReply({
-                        embeds: [embed],
+                        embeds: [embed]
                     }));
                 });
         } catch (e) {
             console.log(e);
             return void (await interaction.editReply({
-                embeds: [EmbedUtil.getErrorEmbed("An error occurred.")],
+                embeds: [EmbedUtil.getErrorEmbed("An error occurred.")]
             }));
         }
     }

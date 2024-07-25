@@ -13,43 +13,45 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
-import { SlashCommandBuilder } from '@discordjs/builders';
-
 import {
-    CommandInteraction,
+    AutocompleteInteraction,
     Client,
-    AutocompleteInteraction
+    CommandInteraction
 } from "discord.js";
 
-import ACommand from "@structs/ACommand";
+import { SlashCommandBuilder } from "@discordjs/builders";
 
-import { ICommand } from "@defs/ICommand";
+import ACommand from "@structs/ACommand";
+import Config from "@structs/Config";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
-import Config from "@structs/Config";
+import { ICommand } from "@defs/ICommand";
 
 export default class SkinCommand extends ACommand implements ICommand {
-
     constructor(private readonly client: Client) {
         super(
             new SlashCommandBuilder()
                 .setName("skin")
                 .setDescription("View a specific weapon skin.")
-                .addStringOption(option =>
-                    option.setName("skin")
+                .addStringOption((option) =>
+                    option
+                        .setName("skin")
                         .setDescription("The skin to search for.")
                         .setRequired(true)
-                        .setAutocomplete(true))
-                .addNumberOption(option =>
-                    option.setName("level")
+                        .setAutocomplete(true)
+                )
+                .addNumberOption((option) =>
+                    option
+                        .setName("level")
                         .setDescription("The skin's level.")
                         .setRequired(true)
                         .setMinValue(1)
-                        .setMaxValue(5))
-                .addBooleanOption(option =>
-                    option.setName("preview")
+                        .setMaxValue(5)
+                )
+                .addBooleanOption((option) =>
+                    option
+                        .setName("preview")
                         .setDescription("View the skin preview?")
                         .setRequired(false)
                 )
@@ -62,17 +64,17 @@ export default class SkinCommand extends ACommand implements ICommand {
         try {
             const skin: string = interaction.options.getString("skin")!;
             const variant: number = interaction.options.getNumber("level")!;
-            const preview: boolean = interaction.options.getBoolean("preview") || false;
+            const preview: boolean =
+                interaction.options.getBoolean("preview") || false;
             await fetch(`https://valorant-api.com/v1/weapons/skins`)
-                .then(response => response.json())
-                .then(async data => {
+                .then((response) => response.json())
+                .then(async (data) => {
                     const skins = data.data;
-                    const found = skins.find(s => s.displayName === skin);
-                    console.log(found)
+                    const found = skins.find((s) => s.displayName === skin);
+                    console.log(found);
                     const chroma = found.levels[variant - 1];
 
                     if (preview) {
-
                         const link = encodeURIComponent(chroma.streamedVideo);
                         const skinName = encodeURIComponent(chroma.displayName);
 
@@ -86,19 +88,18 @@ export default class SkinCommand extends ACommand implements ICommand {
                         return void interaction.reply({
                             content: `[⠀](${uri})`
                         });
-
                     } else {
                         const embed = EmbedUtil.getEmbed(this.client)
                             .setImage(chroma.displayIcon)
-                            .setDescription(`**${chroma.displayName}**`)
+                            .setDescription(`**${chroma.displayName}**`);
 
                         return void interaction.reply({
                             embeds: [embed]
                         });
                     }
-                })
+                });
         } catch (e) {
-            console.log(e)
+            console.log(e);
             const embed = EmbedUtil.getErrorEmbed(
                 "Could not find a skin with that level/variant."
             );
@@ -123,21 +124,26 @@ export default class SkinCommand extends ACommand implements ICommand {
         const focused: string = inter.options.getFocused().toLowerCase();
         try {
             await fetch(`https://valorant-api.com/v1/weapons/skins`)
-                .then(response => response.json())
-                .then(data => {
+                .then((response) => response.json())
+                .then((data) => {
                     const skins = this.shuffle(data.data);
                     const filtered = skins.filter(
-                        (skin: { displayName: string }) => skin.displayName.toLowerCase().startsWith(focused)
+                        (skin: { displayName: string }) =>
+                            skin.displayName.toLowerCase().startsWith(focused)
                     );
-                    const options = this.reduceTo25Elements(filtered).map((skin: { displayName: string }) => ({
-                        name: skin.displayName,
-                        value: skin.displayName,
-                    }));
+                    const options = this.reduceTo25Elements(filtered).map(
+                        (skin: { displayName: string }) => ({
+                            name: skin.displayName,
+                            value: skin.displayName
+                        })
+                    );
                     return void inter.respond(options);
                 });
         } catch (e) {
-            console.log(e)
-            return void inter.respond([ { name: "An error occurred.", value: "a" } ]);
+            console.log(e);
+            return void inter.respond([
+                { name: "An error occurred.", value: "a" }
+            ]);
         }
     }
 }

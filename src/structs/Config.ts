@@ -42,7 +42,7 @@ type JsonConfig = {
         mongoUri: string;
     };
     web: {
-        host: string,
+        host: string;
         deployed: boolean;
         port: number;
     };

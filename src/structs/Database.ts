@@ -1,12 +1,10 @@
 import { logger } from "@app/CypherNetwork";
 
-import { connect, Mongoose } from "mongoose";
+import config from "../../config.json";
+import { Mongoose, connect } from "mongoose";
 import * as process from "node:process";
 
-import config from "../../config.json";
-
 class Database {
-
     public static instance: Mongoose;
 
     public static async initialize(): Promise<void> {

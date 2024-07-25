@@ -15,18 +15,14 @@
  * All portions of this software are available for public use, provided that
  * credit is given to the original author(s).
  */
-import {
-    Client,
-    ClientEvents,
-    GuildMember,
-    Interaction
-} from "discord.js";
+import { Client, ClientEvents, GuildMember, Interaction } from "discord.js";
 
 import CommandManager from "@managers/CommandManager";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
 import { IEvent } from "@defs/IEvent";
+
 import { logger } from "@app/CypherNetwork";
 
 export default class InteractionEvent implements IEvent {

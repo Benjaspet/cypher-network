@@ -13,11 +13,7 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-import {
-    Client,
-    CommandInteraction,
-    SlashCommandBuilder,
-} from "discord.js";
+import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
 
 import ACommand from "@structs/ACommand";
 
@@ -28,19 +24,24 @@ import { ICommand } from "@defs/ICommand";
 import fetch from "node-fetch";
 
 export default class ContentCommand extends ACommand implements ICommand {
-
     constructor(private readonly client: Client) {
         super(
             new SlashCommandBuilder()
                 .setName("content")
-                .setDescription("Provides the stuff we consider content for VALORANT")
-                .addStringOption(option =>
-                        option.setName("buddy")
+                .setDescription(
+                    "Provides the stuff we consider content for VALORANT"
+                )
+                .addStringOption(
+                    (option) =>
+                        option
+                            .setName("buddy")
                             .setDescription("Gets the buddy from VALORANT")
                     //.setAutocomplete(true)
                 )
-                .addStringOption(option =>
-                        option.setName("cards")
+                .addStringOption(
+                    (option) =>
+                        option
+                            .setName("cards")
                             .setDescription("Gets the cards from VALORANT")
                     //.setAutocomplete(true)
                 )
@@ -56,10 +57,11 @@ export default class ContentCommand extends ACommand implements ICommand {
 
         if (buddy) {
             await fetch(`https://valorant-api.com/v1/buddies`)
-                .then(response => response.json())
-                .then(async ({data}) => {
+                .then((response) => response.json())
+                .then(async ({ data }) => {
                     const found = data.find(
-                        (found: { displayName: string }) => found.displayName === buddy,
+                        (found: { displayName: string }) =>
+                            found.displayName === buddy
                     );
                     const buddyImage = found.displayIcon;
 
@@ -72,10 +74,11 @@ export default class ContentCommand extends ACommand implements ICommand {
                 });
         } else if (card) {
             await fetch(`https://valorant-api.com/v1/playercards`)
-                .then(response => response.json())
-                .then(async ({data}) => {
+                .then((response) => response.json())
+                .then(async ({ data }) => {
                     const found = data.find(
-                        (found: { displayName: string }) => found.displayName === card,
+                        (found: { displayName: string }) =>
+                            found.displayName === card
                     );
                     const cardImage = found.displayIcon;
 

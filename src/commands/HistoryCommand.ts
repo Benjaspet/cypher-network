@@ -13,12 +13,11 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import {
     Client,
     CommandInteraction,
     EmbedBuilder,
-    SlashCommandBuilder,
+    SlashCommandBuilder
 } from "discord.js";
 
 import ACommand from "@structs/ACommand";
@@ -41,13 +40,13 @@ export default class HistoryCommand extends ACommand implements ICommand {
                     option
                         .setName("name")
                         .setDescription("The player's name.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
                         .setName("tag")
                         .setDescription("The player's tag.")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addStringOption((option) =>
                     option
@@ -60,10 +59,10 @@ export default class HistoryCommand extends ACommand implements ICommand {
                             { name: "Korea", value: "kr" },
                             { name: "Brazil", value: "br" },
                             { name: "Latin America", value: "latam" },
-                            { name: "Asia-Pacific", value: "ap" },
-                        ),
+                            { name: "Asia-Pacific", value: "ap" }
+                        )
                 )
-                .toJSON(),
+                .toJSON()
         );
     }
 
@@ -71,16 +70,16 @@ export default class HistoryCommand extends ACommand implements ICommand {
         if (!interaction.isChatInputCommand()) return;
 
         const name: string = encodeURIComponent(
-            interaction.options.getString("name")!,
+            interaction.options.getString("name")!
         );
         const tag: string = encodeURIComponent(
-            interaction.options.getString("tag")!,
+            interaction.options.getString("tag")!
         );
         const region: string = interaction.options.getString("region")!;
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`,
+                `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${name}/${tag}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
             )
                 .then((response) => response.json())
                 .then(async (res) => {
@@ -92,7 +91,7 @@ export default class HistoryCommand extends ACommand implements ICommand {
                     for (let j = 0; j < i; j++) {
                         const currentMatch = matches[j];
                         const p: any = currentMatch.players.all_players.find(
-                            (player: any) => player.name === name,
+                            (player: any) => player.name === name
                         );
                         const score: number = p.stats.score;
                         const kills: number = p.stats.kills;
@@ -113,26 +112,28 @@ export default class HistoryCommand extends ACommand implements ICommand {
                                 `\n` +
                                 `• Bodyshots: **${bodyshots}**` +
                                 `\n` +
-                                `• Legshots: **${legshots}**`,
+                                `• Legshots: **${legshots}**`
                         });
                     }
                     embed.addFields(fieldData);
                     embed.setAuthor({
-                        name: `Recent Matches: ${decodeURIComponent(name)}#${tag}`,
+                        name: `Recent Matches: ${decodeURIComponent(name)}#${tag}`
                     });
-                    embed.setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR());
+                    embed.setColor(
+                        CypherNetworkConstants.DEFAULT_EMBED_COLOR()
+                    );
                     embed.setFooter({
                         text: "Cypher Network",
-                        iconURL: this.client.user?.displayAvatarURL(),
+                        iconURL: this.client.user?.displayAvatarURL()
                     });
                     embed.setTimestamp();
                     return void (await interaction.editReply({
-                        embeds: [embed.toJSON()],
+                        embeds: [embed.toJSON()]
                     }));
                 });
         } catch (e) {
             const embed = EmbedUtil.getErrorEmbed(
-                "An error occurred while fetching competitive data.",
+                "An error occurred while fetching competitive data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));
         }
