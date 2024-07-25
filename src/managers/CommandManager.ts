@@ -27,6 +27,7 @@ import ACommand from "@structs/ACommand";
 
 import { ICommand } from "@defs/ICommand";
 import SkinCommand from "@commands/SkinCommand";
+import ContentCommand from "@commands/ContentCommand";
 
 export default class CommandManager {
     public static commands: Collection<string, ICommand> = new Collection<
@@ -43,7 +44,8 @@ export default class CommandManager {
             new MostRecentCommand(client),
             new InfoCommand(client),
             new AgentCommand(client),
-            new SkinCommand(client)
+            new SkinCommand(client),
+            new ContentCommand(client)
         ]);
     }
 
