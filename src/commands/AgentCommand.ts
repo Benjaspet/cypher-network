@@ -13,15 +13,7 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
-import {
-    Client,
-    CommandInteraction,
-    EmbedBuilder,
-    SlashCommandBuilder,
-} from "discord.js";
-
-import CypherNetworkConstants from "@app/Constants";
+import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
 
 import ACommand from "@structs/ACommand";
 
@@ -66,10 +58,10 @@ export default class AgentCommand extends ACommand implements ICommand {
                             { name: "Gekko", value: "Gekko" },
                             { name: "Deadlock", value: "Deadlock" },
                             { name: "Iso", value: "Iso" },
-                            { name: "Clove", value: "Clove" },
-                        ),
+                            { name: "Clove", value: "Clove" }
+                        )
                 )
-                .toJSON(),
+                .toJSON()
         );
     }
 
@@ -78,50 +70,47 @@ export default class AgentCommand extends ACommand implements ICommand {
         const agentName = interaction.options.getString("agent", true);
         await interaction.deferReply();
         try {
-            await fetch(`https://valorant-api.com/v1/agents?isPlayableCharacter=true`)
+            await fetch(
+                `https://valorant-api.com/v1/agents?isPlayableCharacter=true`
+            )
                 .then((response) => response.json())
                 .then(async (res) => {
                     const { data } = res;
                     const agent = data.find(
-                        (agent: { displayName: string }) => agent.displayName === agentName,
+                        (agent: { displayName: string }) =>
+                            agent.displayName === agentName
                     );
-                    const embed = new EmbedBuilder()
+                    const embed = EmbedUtil.getEmbed(this.client)
                         .setAuthor({
                             name: agent.displayName,
-                            iconURL: agent.displayIcon,
+                            iconURL: agent.displayIcon
                         })
                         .setThumbnail(agent.displayIcon)
-                        .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(agent.description)
                         .addFields([
                             {
                                 name: "Role",
                                 value: agent.role.displayName,
-                                inline: true,
-                            },
-                        ])
-                        .setFooter({
-                            text: "Cypher Network",
-                            iconURL: this.client.user?.displayAvatarURL(),
-                        })
-                        .setTimestamp();
+                                inline: true
+                            }
+                        ]);
 
                     agent.abilities.forEach((ability: any) => {
                         embed.addFields([
                             {
                                 name: ability.displayName,
-                                value: ability.description,
-                            },
+                                value: ability.description
+                            }
                         ]);
                     });
 
                     return void (await interaction.editReply({
-                        embeds: [embed],
+                        embeds: [embed]
                     }));
                 });
         } catch (e) {
             const embed = EmbedUtil.getErrorEmbed(
-                "An error occurred while fetching agent data.",
+                "An error occurred while fetching agent data."
             );
             return void (await interaction.editReply({ embeds: [embed] }));
         }

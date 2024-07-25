@@ -13,12 +13,11 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-
 import {
     Client,
     CommandInteraction,
     SlashCommandBuilder,
-    version,
+    version
 } from "discord.js";
 
 import ACommand from "@structs/ACommand";
@@ -42,7 +41,7 @@ class InfoCommand extends ACommand implements ICommand {
             new SlashCommandBuilder()
                 .setName("info")
                 .setDescription("Get information about the bot.")
-                .toJSON(),
+                .toJSON()
         );
     }
 
@@ -54,7 +53,7 @@ class InfoCommand extends ACommand implements ICommand {
 
         const embed = EmbedUtil.getEmbed(this.client)
             .setAuthor({
-                name: "Watching where you are...",
+                name: "Watching where you are..."
             })
             .setDescription(`"*${random()}*"`)
             .addFields([
@@ -63,14 +62,14 @@ class InfoCommand extends ACommand implements ICommand {
                     value:
                         `• Powered by DJS ${version}\n` +
                         `• Developed by: Ponjo Studios\n` +
-                        `• Server count: ${serverCount}\n`,
+                        `• Server count: ${serverCount}\n`
                 },
                 {
                     name: "Links",
                     value:
                         "• [Terms of Service](https://docs.benpetrillo.dev/cypher-network/tos.html)\n" +
-                        "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)",
-                },
+                        "• [Privacy Policy](https://docs.benpetrillo.dev/cypher-network/privacy-policy.html)"
+                }
             ])
             .toJSON();
 
