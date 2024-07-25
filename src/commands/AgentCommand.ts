@@ -90,6 +90,7 @@ export default class AgentCommand extends ACommand implements ICommand {
                             name: agent.displayName,
                             iconURL: agent.displayIcon,
                         })
+                        .setThumbnail(agent.displayIcon)
                         .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                         .setDescription(agent.description)
                         .addFields([

@@ -44,14 +44,14 @@ export default class SkinCommand extends ACommand implements ICommand {
         if (!interaction.isChatInputCommand()) return;
         try {
             const skin: string = interaction.options.getString("skin")!;
-            const variant: number = interaction.options.getNumber("variant")!;
+            const variant: number = interaction.options.getNumber("level")!;
             const preview: boolean = interaction.options.getBoolean("preview") || false;
             await fetch(`https://valorant-api.com/v1/weapons/skins`)
                 .then(response => response.json())
                 .then(async data => {
                     const skins = data.data;
                     const found = skins.find(s => s.displayName === skin);
-                    // console.log(found);
+                    console.log(found)
                     const chroma = found.levels[variant - 1];
 
                     if (preview) {
