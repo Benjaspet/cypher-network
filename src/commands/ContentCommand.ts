@@ -51,21 +51,20 @@ export default class ContentCommand extends ACommand implements ICommand {
     public async execute(interaction: CommandInteraction): Promise<void> {
         if (!interaction.isChatInputCommand()) return;
 
-        const buddy: string = interaction.options.getString("buddies")!;
+        const buddy: string = interaction.options.getString("buddy")!;
         const card: string = interaction.options.getString("cards")!;
 
         if (buddy) {
             await fetch(`https://valorant-api.com/v1/buddies`)
                 .then(response => response.json())
                 .then(async ({data}) => {
-                    const buddyName = interaction.options.getString("buddies");
                     const found = data.find(
-                        (found: { displayName: string }) => found.displayName === buddyName,
+                        (found: { displayName: string }) => found.displayName === buddy,
                     );
                     const buddyImage = found.displayIcon;
 
                     const embed = EmbedUtil.getEmbed(this.client)
-                        .setTitle(`${buddyName}`)
+                        .setTitle(`${buddy}`)
                         .setImage(buddyImage)
                         .toJSON();
 
@@ -75,14 +74,13 @@ export default class ContentCommand extends ACommand implements ICommand {
             await fetch(`https://valorant-api.com/v1/playercards`)
                 .then(response => response.json())
                 .then(async ({data}) => {
-                    const cardName = interaction.options.getString("cards");
                     const found = data.find(
-                        (found: { displayName: string }) => found.displayName === cardName,
+                        (found: { displayName: string }) => found.displayName === card,
                     );
                     const cardImage = found.displayIcon;
 
                     const embed = EmbedUtil.getEmbed(this.client)
-                        .setTitle(`Player Card: ${cardName}`)
+                        .setTitle(`Player Card: ${card}`)
                         .setImage(cardImage)
                         .toJSON();
 
