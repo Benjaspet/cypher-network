@@ -79,7 +79,7 @@ export default class SkinCommand extends ACommand implements ICommand {
                         const skinName = encodeURIComponent(chroma.displayName);
 
                         let host = Config.get("web").host;
-                        if (Config.get("web").deployed) {
+                        if (!Config.get("web").deployed) {
                             host += Config.get("web").port;
                         }
 

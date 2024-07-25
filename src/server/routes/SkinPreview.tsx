@@ -2,8 +2,6 @@ import Elysia, { Context } from "elysia";
 
 import { logger } from "@app/CypherNetwork";
 
-import Html from "@kitajs/html";
-
 /**
  * @api [GET] /api/v1/preview/:id
  * @description Gets a skin's preview video.
