@@ -1,16 +1,33 @@
+/*
+ * Copyright © 2024 Ben Petrillo, Kobe Do, Tridip Paul.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * All portions of this software are available for public use,
+ * provided that credit is given to the original author(s).
+ */
+
 import { SlashCommandBuilder } from '@discordjs/builders';
+
 import {
     CommandInteraction,
     Client,
-    EmbedBuilder,
     AutocompleteInteraction
 } from "discord.js";
-import ACommand from "@structs/ACommand";
-import { ICommand } from "@defs/ICommand";
-import EmbedUtil from "@utils/EmbedUtil";
-import CypherNetworkConstants from "@app/Constants";
 
-import config from "../../config.json";
+import ACommand from "@structs/ACommand";
+
+import { ICommand } from "@defs/ICommand";
+
+import EmbedUtil from "@utils/EmbedUtil";
+
 import Config from "@structs/Config";
 
 export default class SkinCommand extends ACommand implements ICommand {
@@ -60,8 +77,8 @@ export default class SkinCommand extends ACommand implements ICommand {
                         const skinName = encodeURIComponent(chroma.displayName);
 
                         let host = Config.get("web").host;
-                        if (config.web.deployed) {
-                            host += config.web.port;
+                        if (Config.get("web").deployed) {
+                            host += Config.get("web").port;
                         }
 
                         const uri = `${host}/api/v1/preview?vid=${link}&name=${skinName}`;
@@ -71,9 +88,9 @@ export default class SkinCommand extends ACommand implements ICommand {
                         });
 
                     } else {
-                        const embed = new EmbedBuilder()
-                            .setImage(chroma.fullRender)
-                            .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
+                        const embed = EmbedUtil.getEmbed(this.client)
+                            .setImage(chroma.displayIcon)
+                            .setDescription(`**${chroma.displayName}**`)
 
                         return void interaction.reply({
                             embeds: [embed]
