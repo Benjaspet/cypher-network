@@ -12,8 +12,9 @@ async function getPreview({
     logger.info(
         `Previewing ${decodeURIComponent(name)} video: ${decodeURIComponent(vid)}`
     );
-    return (
-        <html lang={"en"}>
+    try {
+        return (
+            <html lang={"en"}>
             <head>
                 <title>Preview</title>
                 <meta
@@ -52,13 +53,31 @@ async function getPreview({
                 </style>
             </head>
             <body>
-                <video controls>
-                    <source src={decodeURIComponent(vid)} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
+            <video controls>
+                <source src={decodeURIComponent(vid)} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
             </body>
-        </html>
-    );
+            </html>
+        );
+    } catch (e) {
+        logger.error(`An error occurred: ${e}`);
+        return (
+            <html lang={"en"}>
+            <head>
+                <title>Error</title>
+                <meta
+                    name={"viewport"}
+                    content={"width=device-width, initial-scale=1"}
+                />
+                <meta name={"theme-color"} content={"#26867c"} />
+            </head>
+            <body>
+            <h1>Oops! An error occurred.</h1>
+            </body>
+            </html>
+        );
+    }
 }
 
 export default function (app: Elysia): Elysia {
