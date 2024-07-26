@@ -41,7 +41,7 @@ export default class ContentCommand extends ACommand implements ICommand {
                 .addStringOption(
                     (option) =>
                         option
-                            .setName("cards")
+                            .setName("playercard")
                             .setDescription("Gets the cards from VALORANT")
                             .setAutocomplete(true)
                 )
@@ -52,41 +52,49 @@ export default class ContentCommand extends ACommand implements ICommand {
     public async execute(interaction: CommandInteraction): Promise<void> {
         if (!interaction.isChatInputCommand()) return;
         const buddy: string = interaction.options.getString("buddy")!;
-        const card: string = interaction.options.getString("cards")!;
+        const card: string = interaction.options.getString("playercard")!;
 
-        if (buddy) {
-            await fetch(`https://valorant-api.com/v1/buddies`)
-                .then((response) => response.json())
-                .then(async ({ data }) => {
-                    const found = data.find(
-                        (found: { displayName: string }) =>
-                            found.displayName === buddy
-                    );
-                    const buddyImage = found.displayIcon;
+        try {
+            if (buddy) {
+                await fetch(`https://valorant-api.com/v1/buddies`)
+                    .then((response) => response.json())
+                    .then(async ({ data }) => {
+                        const found = data.find(
+                            (found: { displayName: string }) =>
+                                found.displayName === buddy
+                        );
+                        const buddyImage = found.displayIcon;
 
-                    const embed = EmbedUtil.getEmbed(this.client)
-                        .setTitle(`${buddy}`)
-                        .setImage(buddyImage)
-                        .toJSON();
+                        const embed = EmbedUtil.getEmbed(this.client)
+                            .setTitle(`${buddy}`)
+                            .setImage(buddyImage)
+                            .toJSON();
 
-                    await interaction.reply({ embeds: [embed] });
-                });
-        } else if (card) {
-            await fetch(`https://valorant-api.com/v1/playercards`)
-                .then((response) => response.json())
-                .then(async ({ data }) => {
-                    const found = data.find(
-                        (found: { displayName: string }) =>
-                            found.displayName === card
-                    );
-                    const cardImage = found.displayIcon;
-                    const embed = EmbedUtil.getEmbed(this.client)
-                        .setTitle(`Player Card: ${card}`)
-                        .setImage(cardImage)
-                        .toJSON();
-
-                    await interaction.reply({ embeds: [embed] });
-                });
+                        await interaction.reply({ embeds: [embed] });
+                    });
+            } else if (card) {
+                await fetch(`https://valorant-api.com/v1/playercards`)
+                    .then((response) => response.json())
+                    .then(async ({ data }) => {
+                        const found = data.find(
+                            (found: { displayName: string }) =>
+                                found.displayName === card
+                        );
+                        const embed = EmbedUtil.getEmbed(this.client)
+                            .setAuthor({
+                                name: found.displayName,
+                                iconURL: found.smallArt
+                            })
+                            .setImage(found.wideArt)
+                            .toJSON();
+                        await interaction.reply({ embeds: [embed] });
+                    });
+            }
+        } catch (e) {
+            console.log(e);
+            return void interaction.reply({
+                content: "An error occurred."
+            });
         }
     }
 
@@ -112,7 +120,7 @@ export default class ContentCommand extends ACommand implements ICommand {
                 case "buddy":
                     apiFocus = "buddies";
                     break;
-                case "cards":
+                case "playercard":
                     apiFocus = "playercards";
                     break;
             }
