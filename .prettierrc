@@ -15,6 +15,7 @@
     "importOrder": [
         "bun",
         "elysia",
+        "^@elysiajs/(.*)$",
         "discord.js",
         "discord-api-types",
         "^@discordjs/(.*)$",

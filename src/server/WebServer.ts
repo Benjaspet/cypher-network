@@ -1,5 +1,5 @@
-
 import Elysia from "elysia";
+import { html } from "@elysiajs/html";
 
 import skinPreview from "@routes/SkinPreview";
 
@@ -7,7 +7,6 @@ import Config from "@structs/Config";
 
 import Constants from "@app/Constants";
 import { logger } from "@app/CypherNetwork";
-import { html } from "@elysiajs/html";
 
 class WebServer {
     private readonly app: Elysia;
