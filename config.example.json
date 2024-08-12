@@ -2,6 +2,7 @@
     "clientId": 1,
     "guildId": 1,
     "embedColor": "#111111",
+    "development": false,
     "apiKey": "",
     "activity": {
         "status": "watching",

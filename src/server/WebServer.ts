@@ -3,6 +3,7 @@ import { html } from "@elysiajs/html";
 
 import skinPreview from "@routes/SkinPreview";
 import discordAuth from "@routes/DiscordAuth";
+import desktopAgent from "@routes/DesktopAgent";
 
 import Config from "@structs/Config";
 
@@ -33,10 +34,10 @@ class WebServer {
     private initRoutes() {
         this.app
             .use(html())
-            .use(skinPreview)
             .group("/api/v1", (app) => app
                 .use(skinPreview)
                 .use(discordAuth)
+                .use(desktopAgent))
             .get("/", ({ redirect }) => redirect(Constants.INVITE_URL()));
     }
 

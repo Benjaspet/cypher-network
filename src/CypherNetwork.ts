@@ -57,6 +57,9 @@ await Database.initialize();
 import WebServer from "@app/WebServer";
 WebServer.initialize();
 
+import AgentUtil from "@utils/AgentUtil";
+await AgentUtil.initialize();
+
 export const client: Client = new Client({
     partials: [Partials.Channel, Partials.GuildMember, Partials.Message],
     allowedMentions: { parse: ["users", "everyone"], repliedUser: true },

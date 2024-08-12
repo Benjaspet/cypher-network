@@ -8,17 +8,24 @@ class DatabaseUtil {
      *
      * @param user The user to fetch or create data for.
      */
-    static async getData(user: User): Promise<ICypherUser> {
+    static async getDataByUser(user: User): Promise<ICypherUser> {
+        return DatabaseUtil.getDataById(user.id);
+    }
+
+    /**
+     * Fetches or creates a user's data by their ID.
+     *
+     * @param id The ID of the user to fetch or create data for.
+     */
+    static async getDataById(id: string): Promise<ICypherUser> {
         // Check if the user exists.
-        let data = await CypherUser.findOne({ _id: user.id });
+        let data = await CypherUser.findOne({ _id: id });
         if (data != undefined) {
             return data;
         }
 
         // Create a new user.
-        data = new CypherUser({
-            _id: user.id
-        });
+        data = new CypherUser({ _id: id });
         await data.save();
 
         return data;

@@ -42,5 +42,6 @@ export interface ICypherUser extends Document {
         | undefined;
 }
 
-const model = Database.instance!.model<ICypherUser>("CypherUser", userSchema);
+const model = (await Database.getInstance())
+    .model<ICypherUser>("CypherUser", userSchema);
 export default model;

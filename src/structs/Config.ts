@@ -90,7 +90,7 @@ const defaultConfig = {
 } satisfies JsonConfig;
 
 export default class Config {
-    private static instance: JsonConfig = defaultConfig;
+    private static instance: JsonConfig | undefined = undefined;
 
     /**
      * Loads the configuration from the JSON file.
@@ -103,6 +103,8 @@ export default class Config {
                 "config.json",
                 JSON.stringify(defaultConfig, null, 4)
             );
+
+            Config.instance = defaultConfig;
         } else
             try {
                 // Parse the configuration.
@@ -142,6 +144,10 @@ export default class Config {
      * @param key The key to fetch.
      */
     public static get<K extends keyof JsonConfig>(key: K): JsonConfig[K] {
+        if (!Config.instance) {
+            throw new Error("Configuration not loaded.");
+        }
+
         return Config.instance[key] ?? defaultConfig[key];
     }
 
