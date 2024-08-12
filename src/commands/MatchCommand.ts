@@ -29,6 +29,7 @@ import { ICommand } from "@defs/ICommand";
 import CypherNetworkConstants from "@app/Constants";
 
 import fetch from "node-fetch";
+import Constants from "@app/Constants";
 
 export default class MatchCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
@@ -53,7 +54,7 @@ export default class MatchCommand extends ACommand implements ICommand {
         await interaction.deferReply();
         try {
             await fetch(
-                `https://api.henrikdev.xyz/valorant/v2/match/${matchId}?api_key=HDEV-04d0ed17-947a-49c0-871a-41ca3314250d`
+                `https://api.henrikdev.xyz/valorant/v2/match/${matchId}?api_key=${Constants.API_KEY}`
             )
                 .then((response) => response.json())
                 .then(async (res) => {

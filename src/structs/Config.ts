@@ -25,6 +25,7 @@ type JsonConfig = {
     clientId: string;
     guildId: string;
     embedColor: string; // This should be a parsable hex code.
+    apiKey: string;
     activity: {
         status: string; // This gets parsed later.
         message: string;
@@ -52,6 +53,7 @@ const defaultConfig = {
     clientId: "0",
     guildId: "0",
     embedColor: "#000000",
+    apiKey: "",
     activity: {
         status: "watching",
         message: "where you're hiding."
