@@ -13,19 +13,10 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-import { Client, Partials } from "discord.js";
-
-import ApplicationManager from "@managers/ApplicationManager";
-import EventManager from "@managers/EventManager";
-
-import Config from "@structs/Config";
-import Database from "@structs/Database";
-
-import WebServer from "@app/WebServer";
-
-import { ILogObj, Logger } from "tslog";
 
 /// <editor-fold defaultstate="collapsed" desc="Logger">
+
+import { ILogObj, Logger } from "tslog";
 
 const time: string = "[{{yyyy}}-{{mm}}-{{dd}} {{hh}}:{{MM}}:{{ss}}]";
 export const logger: Logger<ILogObj> = new Logger({
@@ -53,9 +44,17 @@ export const logger: Logger<ILogObj> = new Logger({
 
 /// </editor-fold>
 
+import { Client, Partials } from "discord.js";
+
+console.clear();
+
+import Config from "@structs/Config";
 await Config.parse();
+
+import Database from "@structs/Database";
 await Database.initialize();
 
+import WebServer from "@app/WebServer";
 WebServer.initialize();
 
 export const client: Client = new Client({
@@ -63,6 +62,9 @@ export const client: Client = new Client({
     allowedMentions: { parse: ["users", "everyone"], repliedUser: true },
     intents: []
 });
+
+import ApplicationManager from "@managers/ApplicationManager";
+import EventManager from "@managers/EventManager";
 
 await new ApplicationManager(client).login();
 new EventManager(client);
