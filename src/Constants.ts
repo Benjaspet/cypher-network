@@ -21,6 +21,7 @@ import Config from "@structs/Config";
 
 export default class Constants {
     public static TOKEN = Config.env(Config.get("development") ? "TOKEN-DEV" : "TOKEN");
+    public static API_KEY = Config.get("apiKey");
     public static DEFAULT_EMBED_COLOR = () =>
         Config.get("embedColor") as HexColorString;
     public static EMOJI_SUCCESS = () => Config.get("emojis").success;
