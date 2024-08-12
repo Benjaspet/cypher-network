@@ -22,6 +22,7 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ICommand } from "@defs/ICommand";
 
 import fetch from "node-fetch";
+import Constants from "@app/Constants";
 
 export default class AgentCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
@@ -34,32 +35,7 @@ export default class AgentCommand extends ACommand implements ICommand {
                         .setName("agent")
                         .setDescription("The name of the agent.")
                         .setRequired(true)
-                        .addChoices(
-                            { name: "Brimstone", value: "Brimstone" },
-                            { name: "Phoenix", value: "Phoenix" },
-                            { name: "Sage", value: "Sage" },
-                            { name: "Sova", value: "Sova" },
-                            { name: "Viper", value: "Viper" },
-                            { name: "Cypher", value: "Cypher" },
-                            { name: "Reyna", value: "Reyna" },
-                            { name: "Killjoy", value: "Killjoy" },
-                            { name: "Breach", value: "Breach" },
-                            { name: "Omen", value: "Omen" },
-                            { name: "Jett", value: "Jett" },
-                            { name: "Raze", value: "Raze" },
-                            { name: "Skye", value: "Skye" },
-                            { name: "Yoru", value: "Yoru" },
-                            { name: "Astra", value: "Astra" },
-                            { name: "KAY/O", value: "KAY/O" },
-                            { name: "Chamber", value: "Chamber" },
-                            { name: "Neon", value: "Neon" },
-                            { name: "Fade", value: "Fade" },
-                            { name: "Harbor", value: "Harbor" },
-                            { name: "Gekko", value: "Gekko" },
-                            { name: "Deadlock", value: "Deadlock" },
-                            { name: "Iso", value: "Iso" },
-                            { name: "Clove", value: "Clove" }
-                        )
+                        .addChoices(Constants.AGENTS())
                 )
                 .toJSON()
         );
@@ -67,52 +43,48 @@ export default class AgentCommand extends ACommand implements ICommand {
 
     public async execute(interaction: CommandInteraction): Promise<void> {
         if (!interaction.isChatInputCommand()) return;
+
         const agentName = interaction.options.getString("agent", true);
         await interaction.deferReply();
+
         try {
-            await fetch(
-                `https://valorant-api.com/v1/agents?isPlayableCharacter=true`
-            )
-                .then((response) => response.json())
-                .then(async (res) => {
-                    const { data } = res;
-                    const agent = data.find(
-                        (agent: { displayName: string }) =>
-                            agent.displayName === agentName
-                    );
-                    const embed = EmbedUtil.getEmbed(this.client)
-                        .setAuthor({
-                            name: agent.displayName,
-                            iconURL: agent.displayIcon
-                        })
-                        .setThumbnail(agent.displayIcon)
-                        .setDescription(agent.description)
-                        .addFields([
-                            {
-                                name: "Role",
-                                value: agent.role.displayName,
-                                inline: true
-                            }
-                        ]);
+            const response = await fetch(`https://valorant-api.com/v1/agents?isPlayableCharacter=true`);
+            const { data } = await response.json();
 
-                    agent.abilities.forEach((ability: any) => {
-                        embed.addFields([
-                            {
-                                name: ability.displayName,
-                                value: ability.description
-                            }
-                        ]);
-                    });
+            const agent = data.find(
+                (agent: { displayName: string }) =>
+                    agent.displayName === agentName
+            );
+            const embed = EmbedUtil.getEmbed(this.client)
+                .setAuthor({
+                    name: agent.displayName,
+                    iconURL: agent.displayIcon
+                })
+                .setThumbnail(agent.displayIcon)
+                .setDescription(agent.description)
+                .addFields([
+                    {
+                        name: "Role",
+                        value: agent.role.displayName,
+                        inline: true
+                    }
+                ]);
 
-                    return void (await interaction.editReply({
-                        embeds: [embed]
-                    }));
-                });
+            agent.abilities.forEach((ability: any) => {
+                embed.addFields([
+                    {
+                        name: ability.displayName,
+                        value: ability.description
+                    }
+                ]);
+            });
+
+            await interaction.editReply({ embeds: [embed] });
         } catch (e) {
             const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while fetching agent data."
             );
-            return void (await interaction.editReply({ embeds: [embed] }));
+            await interaction.editReply({ embeds: [embed] })
         }
     }
 }

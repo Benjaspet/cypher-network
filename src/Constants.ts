@@ -18,6 +18,9 @@
 import { HexColorString } from "discord.js";
 
 import Config from "@structs/Config";
+import agents from "@app/agents.json";
+
+await Config.parse();
 
 export default class Constants {
     public static TOKEN = Config.env(Config.get("development") ? "TOKEN-DEV" : "TOKEN");
@@ -28,4 +31,5 @@ export default class Constants {
     public static EMOJI_ERROR = () => Config.get("emojis").error;
     public static INVITE_URL = () =>
         `https://discord.com/oauth2/authorize?client_id=${Config.get("clientId")}&permissions=274878187520&integration_type=0&scope=bot+applications.commands`;
+    public static AGENTS = () => agents.map((agent) => ({ name: agent, value: agent }));
 }
