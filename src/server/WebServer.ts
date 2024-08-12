@@ -2,6 +2,7 @@ import Elysia from "elysia";
 import { html } from "@elysiajs/html";
 
 import skinPreview from "@routes/SkinPreview";
+import discordAuth from "@routes/DiscordAuth";
 
 import Config from "@structs/Config";
 
@@ -33,6 +34,9 @@ class WebServer {
         this.app
             .use(html())
             .use(skinPreview)
+            .group("/api/v1", (app) => app
+                .use(skinPreview)
+                .use(discordAuth)
             .get("/", ({ redirect }) => redirect(Constants.INVITE_URL()));
     }
 

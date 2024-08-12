@@ -48,6 +48,11 @@ type JsonConfig = {
         deployed: boolean;
         port: number;
     };
+    oauth: {
+        clientSecret: string;
+        redirectUri: string;
+        scopes: string[];
+    };
 };
 
 const defaultConfig = {
@@ -76,6 +81,11 @@ const defaultConfig = {
         host: "http://localhost",
         deployed: false,
         port: 3000
+    },
+    oauth: {
+        clientSecret: "",
+        redirectUri: "",
+        scopes: ["identify", "connections"]
     }
 } satisfies JsonConfig;
 

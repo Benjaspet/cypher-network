@@ -31,5 +31,9 @@ export default class Constants {
     public static EMOJI_ERROR = () => Config.get("emojis").error;
     public static INVITE_URL = () =>
         `https://discord.com/oauth2/authorize?client_id=${Config.get("clientId")}&permissions=274878187520&integration_type=0&scope=bot+applications.commands`;
+    public static AUTHORIZE_URL = () => {
+        const config = Config.get("oauth");
+        return `https://discord.com/oauth2/authorize?client_id=${Config.get("clientId")}&response_type=code&redirect_uri=${encodeURI(config.redirectUri)}&scope=${config.scopes.join("+")}`;
+    };
     public static AGENTS = () => agents.map((agent) => ({ name: agent, value: agent }));
 }

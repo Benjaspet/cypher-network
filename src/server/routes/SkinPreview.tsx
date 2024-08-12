@@ -53,5 +53,5 @@ async function getPreview({ query: { vid, name } }: Context<{ query: { vid: stri
 }
 
 export default function (app: Elysia): Elysia {
-    return app.group("/api/v1", (app) => app.get("/preview", getPreview));
+    return app.get("/preview", getPreview);
 }
