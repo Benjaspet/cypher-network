@@ -70,7 +70,9 @@ export default class SkinCommand extends ACommand implements ICommand {
                 .then((response) => response.json())
                 .then(async (data) => {
                     const skins = data.data;
-                    const found = skins.find((s: Types) => s.displayName === skin);
+                    const found = skins.find(
+                        (s: Types) => s.displayName === skin
+                    );
                     //console.log(found);
                     const chroma = found.levels[variant - 1];
 
@@ -127,9 +129,8 @@ export default class SkinCommand extends ACommand implements ICommand {
                 .then((response) => response.json())
                 .then((data) => {
                     const skins: Types[] = this.shuffle(data.data);
-                    const filtered = skins.filter(
-                        (skin: Types) =>
-                            skin.displayName.toLowerCase().startsWith(focused)
+                    const filtered = skins.filter((skin: Types) =>
+                        skin.displayName.toLowerCase().startsWith(focused)
                     );
                     const options = this.reduceTo25Elements(filtered).map(
                         (skin: Types) => ({

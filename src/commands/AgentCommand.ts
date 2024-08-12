@@ -21,8 +21,9 @@ import EmbedUtil from "@utils/EmbedUtil";
 
 import { ICommand } from "@defs/ICommand";
 
-import fetch from "node-fetch";
 import Constants from "@app/Constants";
+
+import fetch from "node-fetch";
 
 export default class AgentCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
@@ -48,7 +49,9 @@ export default class AgentCommand extends ACommand implements ICommand {
         await interaction.deferReply();
 
         try {
-            const response = await fetch(`https://valorant-api.com/v1/agents?isPlayableCharacter=true`);
+            const response = await fetch(
+                `https://valorant-api.com/v1/agents?isPlayableCharacter=true`
+            );
             const { data } = await response.json();
 
             const agent = data.find(
@@ -84,7 +87,7 @@ export default class AgentCommand extends ACommand implements ICommand {
             const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while fetching agent data."
             );
-            await interaction.editReply({ embeds: [embed] })
+            await interaction.editReply({ embeds: [embed] });
         }
     }
 }

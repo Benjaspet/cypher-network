@@ -8,24 +8,31 @@ import Html from "@kitajs/html";
  * @api [GET] /api/v1/preview?vid={vid}&name={name}
  * @description Gets a skin's preview video.
  */
-async function getPreview({ query: { vid, name } }: Context<{ query: { vid: string, name: string } }>) {
-    logger.info(`Previewing ${decodeURIComponent(name)} video: ${decodeURIComponent(vid)}`);
+async function getPreview({
+    query: { vid, name }
+}: Context<{ query: { vid: string; name: string } }>) {
+    logger.info(
+        `Previewing ${decodeURIComponent(name)} video: ${decodeURIComponent(vid)}`
+    );
     const skinName: string = decodeURIComponent(name).replaceAll("\n", " - ");
     const video: string = decodeURIComponent(vid);
     return (
         <html lang={"en"}>
-        <head>
-            <title>Preview</title>
-            <meta name={"viewport"} content={"width=device-width, initial-scale=1"} />
-            <meta name={"og:title"} content={skinName} />
-            <meta name={"theme-color"} content={"#26867c"} />
-            <meta name={"twitter:player"} content={video} />
-            <meta name={"twitter:player:width"} content={"1280"} />
-            <meta name={"twitter:player:height"} content={"720"} />
-            <meta name={"twitter:card"} content={"player"} />
-            <meta name={"twitter:site"} content={"Cypher Network"} />
-            <style>
-                {`
+            <head>
+                <title>Preview</title>
+                <meta
+                    name={"viewport"}
+                    content={"width=device-width, initial-scale=1"}
+                />
+                <meta name={"og:title"} content={skinName} />
+                <meta name={"theme-color"} content={"#26867c"} />
+                <meta name={"twitter:player"} content={video} />
+                <meta name={"twitter:player:width"} content={"1280"} />
+                <meta name={"twitter:player:height"} content={"720"} />
+                <meta name={"twitter:card"} content={"player"} />
+                <meta name={"twitter:site"} content={"Cypher Network"} />
+                <style>
+                    {`
                 body {
                     margin: 0;
                     padding: 0;
@@ -40,14 +47,14 @@ async function getPreview({ query: { vid, name } }: Context<{ query: { vid: stri
                     height: 75%;
                 }
                 `}
-            </style>
-        </head>
-        <body>
-        <video controls>
-            <source src={video} type="video/mp4" />
-            Your browser does not support the video tag.
-        </video>
-        </body>
+                </style>
+            </head>
+            <body>
+                <video controls>
+                    <source src={video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </body>
         </html>
     );
 }

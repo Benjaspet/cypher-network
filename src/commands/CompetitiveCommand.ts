@@ -27,9 +27,9 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ICommand } from "@defs/ICommand";
 
 import CypherNetworkConstants from "@app/Constants";
+import Constants from "@app/Constants";
 
 import fetch from "node-fetch";
-import Constants from "@app/Constants";
 
 export default class CompetitiveCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
@@ -126,7 +126,7 @@ export default class CompetitiveCommand extends ACommand implements ICommand {
                     }));
                 });
         } catch (e) {
-            console.log(e)
+            console.log(e);
             const embed = EmbedUtil.getErrorEmbed(
                 "An error occurred while fetching competitive data."
             );

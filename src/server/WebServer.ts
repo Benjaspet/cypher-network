@@ -1,9 +1,9 @@
-import Elysia from "elysia";
 import { html } from "@elysiajs/html";
+import Elysia from "elysia";
 
-import skinPreview from "@routes/SkinPreview";
-import discordAuth from "@routes/DiscordAuth";
 import desktopAgent from "@routes/DesktopAgent";
+import discordAuth from "@routes/DiscordAuth";
+import skinPreview from "@routes/SkinPreview";
 
 import Config from "@structs/Config";
 
@@ -34,10 +34,9 @@ class WebServer {
     private initRoutes() {
         this.app
             .use(html())
-            .group("/api/v1", (app) => app
-                .use(skinPreview)
-                .use(discordAuth)
-                .use(desktopAgent))
+            .group("/api/v1", (app) =>
+                app.use(skinPreview).use(discordAuth).use(desktopAgent)
+            )
             .get("/", ({ redirect }) => redirect(Constants.INVITE_URL()));
     }
 

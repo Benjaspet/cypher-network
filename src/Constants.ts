@@ -18,12 +18,15 @@
 import { HexColorString } from "discord.js";
 
 import Config from "@structs/Config";
+
 import agents from "@app/agents.json";
 
 await Config.parse();
 
 export default class Constants {
-    public static TOKEN = Config.env(Config.get("development") ? "TOKEN-DEV" : "TOKEN");
+    public static TOKEN = Config.env(
+        Config.get("development") ? "TOKEN-DEV" : "TOKEN"
+    );
     public static API_KEY = Config.get("apiKey");
     public static DEFAULT_EMBED_COLOR = () =>
         Config.get("embedColor") as HexColorString;
@@ -35,5 +38,6 @@ export default class Constants {
         const config = Config.get("oauth");
         return `https://discord.com/oauth2/authorize?client_id=${Config.get("clientId")}&response_type=code&redirect_uri=${encodeURI(config.redirectUri)}&scope=${config.scopes.join("+")}`;
     };
-    public static AGENTS = () => agents.map((agent) => ({ name: agent, value: agent }));
+    public static AGENTS = () =>
+        agents.map((agent) => ({ name: agent, value: agent }));
 }

@@ -27,9 +27,9 @@ import EmbedUtil from "@utils/EmbedUtil";
 import { ICommand } from "@defs/ICommand";
 
 import CypherNetworkConstants from "@app/Constants";
+import Constants from "@app/Constants";
 
 import fetch from "node-fetch";
-import Constants from "@app/Constants";
 
 export default class HistoryCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {

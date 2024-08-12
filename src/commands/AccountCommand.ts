@@ -21,14 +21,13 @@ import {
 } from "discord.js";
 
 import ACommand from "@structs/ACommand";
+import HenrikAPI from "@structs/HenrikAPI";
 
 import EmbedUtil from "@utils/EmbedUtil";
 
 import { ICommand } from "@defs/ICommand";
 
 import CypherNetworkConstants from "@app/Constants";
-
-import HenrikAPI from "@structs/HenrikAPI";
 
 export default class AccountCommand extends ACommand implements ICommand {
     constructor(private readonly client: Client) {
@@ -72,8 +71,15 @@ export default class AccountCommand extends ACommand implements ICommand {
         await interaction.deferReply();
         try {
             const {
-                puuid, region, account_level,
-                card: { wide: wideCard, small: smallCard, large: largeCard, id: cardId }
+                puuid,
+                region,
+                account_level,
+                card: {
+                    wide: wideCard,
+                    small: smallCard,
+                    large: largeCard,
+                    id: cardId
+                }
             } = await HenrikAPI.getAccount(name, tag);
 
             if (card) {
@@ -82,17 +88,15 @@ export default class AccountCommand extends ACommand implements ICommand {
                         name: `${name}#${tag} [Level ${account_level}]`,
                         iconURL: smallCard
                     })
-                    .setColor(
-                        CypherNetworkConstants.DEFAULT_EMBED_COLOR()
-                    )
+                    .setColor(CypherNetworkConstants.DEFAULT_EMBED_COLOR())
                     .setImage(wideCard)
                     .setThumbnail(largeCard)
                     .setDescription(
                         `• Small Card Link: [click here!](${smallCard})` +
-                        `\n` +
-                        `• Large Card Link: [click here!](${largeCard})` +
-                        `\n` +
-                        `• Wide Card Link: [click here!](${wideCard})`
+                            `\n` +
+                            `• Large Card Link: [click here!](${largeCard})` +
+                            `\n` +
+                            `• Wide Card Link: [click here!](${wideCard})`
                     )
                     .setFooter({
                         text: "Cypher Network",
@@ -112,12 +116,12 @@ export default class AccountCommand extends ACommand implements ICommand {
                     .setImage(wideCard)
                     .setDescription(
                         `• Region: **${region}**` +
-                        `\n` +
-                        `• Account Level: **${account_level}**` +
-                        `\n` +
-                        `• PUUID: **${puuid}**` +
-                        `\n` +
-                        `• Card ID: **${cardId}**`
+                            `\n` +
+                            `• Account Level: **${account_level}**` +
+                            `\n` +
+                            `• PUUID: **${puuid}**` +
+                            `\n` +
+                            `• Card ID: **${cardId}**`
                     )
                     .setFooter({
                         text: "Cypher Network",

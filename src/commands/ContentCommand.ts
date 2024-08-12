@@ -13,7 +13,12 @@
  * All portions of this software are available for public use,
  * provided that credit is given to the original author(s).
  */
-import {AutocompleteInteraction, Client, CommandInteraction, SlashCommandBuilder} from "discord.js";
+import {
+    AutocompleteInteraction,
+    Client,
+    CommandInteraction,
+    SlashCommandBuilder
+} from "discord.js";
 
 import ACommand from "@structs/ACommand";
 
@@ -31,19 +36,17 @@ export default class ContentCommand extends ACommand implements ICommand {
                 .setDescription(
                     "Provides the stuff we consider content for VALORANT"
                 )
-                .addStringOption(
-                    (option) =>
-                        option
-                            .setName("buddy")
-                            .setDescription("Gets the buddy from VALORANT")
-                            .setAutocomplete(true)
+                .addStringOption((option) =>
+                    option
+                        .setName("buddy")
+                        .setDescription("Gets the buddy from VALORANT")
+                        .setAutocomplete(true)
                 )
-                .addStringOption(
-                    (option) =>
-                        option
-                            .setName("playercard")
-                            .setDescription("Gets the cards from VALORANT")
-                            .setAutocomplete(true)
+                .addStringOption((option) =>
+                    option
+                        .setName("playercard")
+                        .setDescription("Gets the cards from VALORANT")
+                        .setAutocomplete(true)
                 )
                 .toJSON()
         );
@@ -111,7 +114,7 @@ export default class ContentCommand extends ACommand implements ICommand {
     }
 
     public async autocomplete(inter: AutocompleteInteraction): Promise<void> {
-        if(!inter.isAutocomplete()) return;
+        if (!inter.isAutocomplete()) return;
         const focused: string = inter.options.getFocused().toLowerCase();
         const commandFocus: string = inter.options.getFocused(true).name;
         try {
@@ -128,8 +131,8 @@ export default class ContentCommand extends ACommand implements ICommand {
                 .then((response) => response.json())
                 .then((data) => {
                     const items: Types[] = this.shuffle(data.data);
-                    const filtered = items.filter(
-                        (item: Types) => item.displayName.toLowerCase().startsWith(focused)
+                    const filtered = items.filter((item: Types) =>
+                        item.displayName.toLowerCase().startsWith(focused)
                     );
                     const options = this.reduceTo25Elements(filtered).map(
                         (item: Types) => ({

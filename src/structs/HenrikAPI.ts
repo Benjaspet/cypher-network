@@ -10,9 +10,12 @@ class HenrikAPI {
      * @param tag The account's tag.
      */
     public static async getAccount(
-        name: string, tag: string
+        name: string,
+        tag: string
     ): Promise<AccountDetailsResponse> {
-        const response = await fetch(`${BASE_URL}/account/${name}/${tag}?api_key=${Constants.API_KEY}`);
+        const response = await fetch(
+            `${BASE_URL}/account/${name}/${tag}?api_key=${Constants.API_KEY}`
+        );
         const { data, status } = await response.json();
 
         if (status != 200) {

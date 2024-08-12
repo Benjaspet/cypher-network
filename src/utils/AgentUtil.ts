@@ -1,15 +1,23 @@
 import * as jose from "jose";
-import { FlattenedJWSInput, JSONWebKeySet, JWSHeaderParameters, KeyLike } from "jose";
+import {
+    FlattenedJWSInput,
+    JSONWebKeySet,
+    JWSHeaderParameters,
+    KeyLike
+} from "jose";
 
 const RIOT_JWT_KEYS = "https://auth.riotgames.com/jwks.json";
 
 type RemoteJWKSet = {
-    (protectedHeader?: JWSHeaderParameters, token?: FlattenedJWSInput): Promise<KeyLike>;
+    (
+        protectedHeader?: JWSHeaderParameters,
+        token?: FlattenedJWSInput
+    ): Promise<KeyLike>;
     coolingDown: boolean;
     fresh: boolean;
     reloading: boolean;
     reload: () => Promise<void>;
-    jwks: () => (JSONWebKeySet | undefined)
+    jwks: () => JSONWebKeySet | undefined;
 };
 
 /**
@@ -36,7 +44,10 @@ class AgentUtil {
             throw new Error("Riot Games public key not loaded.");
         }
 
-        const { payload } = await jose.jwtVerify(accessToken, AgentUtil.riotKeys);
+        const { payload } = await jose.jwtVerify(
+            accessToken,
+            AgentUtil.riotKeys
+        );
         if (!payload.sub) {
             throw new Error("Invalid access token, or subject not set.");
         }

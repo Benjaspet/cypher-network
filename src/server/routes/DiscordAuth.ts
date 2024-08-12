@@ -1,12 +1,13 @@
 import Elysia from "elysia";
 
+import Config from "@structs/Config";
+import HenrikAPI from "@structs/HenrikAPI";
+
+import DatabaseUtil from "@utils/DatabaseUtil";
+
 import Constants from "@app/Constants";
 
-import Config from "@structs/Config";
-
 import DiscordOAuth2 from "discord-oauth2";
-import DatabaseUtil from "@utils/DatabaseUtil";
-import HenrikAPI from "@structs/HenrikAPI";
 
 const oauth = new DiscordOAuth2();
 
@@ -28,10 +29,17 @@ const app = new Elysia()
             const cypherUser = await DatabaseUtil.getDataById(id);
 
             // Set the user's Riot Games information.
-            const connections = await oauth.getUserConnections(token.access_token);
-            const riotConnection = connections.find((connection) => connection.type === "riotgames");
+            const connections = await oauth.getUserConnections(
+                token.access_token
+            );
+            const riotConnection = connections.find(
+                (connection) => connection.type === "riotgames"
+            );
             if (!riotConnection) {
-                return new Response("No Riot Account connected. Try again after linking an account.", { status: 401 });
+                return new Response(
+                    "No Riot Account connected. Try again after linking an account.",
+                    { status: 401 }
+                );
             }
 
             const riotName = riotConnection.name;
@@ -41,7 +49,9 @@ const app = new Elysia()
             const { puuid } = await HenrikAPI.getAccount(name, tag);
 
             cypherUser.riot = {
-                riotId: puuid, riotName: name, riotTag: tag
+                riotId: puuid,
+                riotName: name,
+                riotTag: tag
             };
             await cypherUser.save();
 

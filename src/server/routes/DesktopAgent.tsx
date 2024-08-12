@@ -1,6 +1,8 @@
 import Elysia from "elysia";
-import AgentUtil from "@utils/AgentUtil";
+
 import CypherAgent from "@structs/CypherAgent";
+
+import AgentUtil from "@utils/AgentUtil";
 
 const app = new Elysia({ prefix: "/agent" })
     .derive(({ headers }) => {
@@ -21,10 +23,7 @@ const app = new Elysia({ prefix: "/agent" })
             const userId = await AgentUtil.prove(riotToken);
             return { token: CypherAgent.generateToken(userId) };
         } catch (error) {
-            return new Response(
-                "Invalid token received.",
-                { status: 401 }
-            );
+            return new Response("Invalid token received.", { status: 401 });
         }
     })
     .post("/push/:event", ({ token, params: { event } }) => {
