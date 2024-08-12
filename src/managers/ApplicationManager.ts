@@ -15,7 +15,7 @@
  */
 import { Client } from "discord.js";
 
-import CypherNetworkConstants from "@app/Constants";
+import Constants from "@app/Constants";
 import { logger } from "@app/CypherNetwork";
 
 export default class ApplicationManager {
@@ -26,7 +26,7 @@ export default class ApplicationManager {
     }
 
     public async login(): Promise<void> {
-        await this.client.login(CypherNetworkConstants.TOKEN);
+        await this.client.login(Constants.TOKEN);
         logger.info("🚀 Logged in to client: " + this.client.user?.id);
     }
 }
