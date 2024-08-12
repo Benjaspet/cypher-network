@@ -2,6 +2,7 @@
     "clientId": 1,
     "guildId": 1,
     "embedColor": "#111111",
+    "apiKey": "",
     "activity": {
         "status": "watching",
         "message": "where you're hiding"
@@ -20,5 +21,10 @@
     },
     "web": {
         "port": 3000
+    },
+    "oauth": {
+        "clientSecret": "",
+        "redirectUri": "",
+        "scopes": "identify+connections"
     }
 }
