@@ -43,7 +43,7 @@ export interface ICypherUser extends Document {
 }
 
 const model = (await Database.getInstance()).model<ICypherUser>(
-    "CypherUser",
+    "user",
     userSchema
 );
 export default model;

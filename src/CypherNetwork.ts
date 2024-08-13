@@ -48,9 +48,6 @@ import { Client, Partials } from "discord.js";
 
 console.clear();
 
-import Config from "@structs/Config";
-await Config.parse();
-
 import Database from "@structs/Database";
 await Database.initialize();
 

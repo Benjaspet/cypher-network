@@ -21,8 +21,6 @@ import Config from "@structs/Config";
 
 import agents from "@app/agents.json";
 
-await Config.parse();
-
 export default class Constants {
     public static TOKEN = Config.env(
         Config.get("development") ? "TOKEN-DEV" : "TOKEN"

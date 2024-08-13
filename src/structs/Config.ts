@@ -160,3 +160,5 @@ export default class Config {
         return process.env[value];
     }
 }
+
+await Config.parse();

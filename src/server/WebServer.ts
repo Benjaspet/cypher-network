@@ -1,4 +1,5 @@
 import { html } from "@elysiajs/html";
+import cors from "@elysiajs/cors";
 import Elysia from "elysia";
 
 import desktopAgent from "@routes/DesktopAgent";
@@ -33,6 +34,7 @@ class WebServer {
      */
     private initRoutes() {
         this.app
+            .use(cors())
             .use(html())
             .group("/api/v1", (app) =>
                 app.use(skinPreview).use(discordAuth).use(desktopAgent)
