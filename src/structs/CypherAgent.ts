@@ -8,9 +8,7 @@ type EventHandler = {
 };
 
 class CypherClientData implements EventHandler {
-    constructor(
-        private readonly userId: string
-    ) { }
+    constructor(private readonly userId: string) {}
 
     public pushPREGAME(body: unknown): void {
         console.log("Pre game", this.userId, body);

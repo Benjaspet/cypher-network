@@ -36,7 +36,9 @@ class DatabaseUtil {
      *
      * @param uuid The UUID of the user to fetch data for.
      */
-    static async getDataByUuid(uuid: string): Promise<ICypherUser | null | undefined> {
+    static async getDataByUuid(
+        uuid: string
+    ): Promise<ICypherUser | null | undefined> {
         return CypherUser.findOne({ "riot.riotId": uuid });
     }
 }

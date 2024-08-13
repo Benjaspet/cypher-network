@@ -1,5 +1,5 @@
-import { html } from "@elysiajs/html";
 import cors from "@elysiajs/cors";
+import { html } from "@elysiajs/html";
 import Elysia from "elysia";
 
 import desktopAgent from "@routes/DesktopAgent";
